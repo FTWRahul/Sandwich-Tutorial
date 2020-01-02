@@ -122,38 +122,15 @@ public class Spawner : MonoBehaviour
         int rand = Random.Range(0, possibleBread2Pos.Count);
         PlaceIngredient(breadSo,xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y);
         Vector2Int bread2Pos = _grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y].pos;
-//        if (UnfoldIngredients(_grid[xOffset, zOffset]))
-//        {
-//            _depth = 0;
-//            if (UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
-//            {
-//                _depth = 0;
-//                
-//                if(itemsOnBoard.Count < _maxIngredients/2)
-//                {
-//                    if(UnfoldIngredients(_grid[xOffset, zOffset]))
-//                    {
-//                        _depth = 0;
-//                        if(itemsOnBoard.Count < _maxIngredients/2)
-//                        {
-//                            if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
-//                            {
-//                                _depth = 0;
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
 
         bool flip = false;
         int i = 0;
-        while (itemsOnBoard.Count < _maxIngredients - 2)
+        for (int j = 0; j < 10; j++)
         {
-            if (i > 10)
+            if (itemsOnBoard.Count > _maxIngredients - 2)
             {
                 break;
-            } 
+            }
             if (flip)
             {
                 if(UnfoldIngredients(_grid[bread2Pos.x, bread2Pos.y]))
@@ -170,8 +147,8 @@ public class Spawner : MonoBehaviour
                     _wRand.ResetWeights();
                 }
             }
-            i++;
             flip = !flip;
+            
         }
     }
 
@@ -191,7 +168,7 @@ public class Spawner : MonoBehaviour
         _unOccupiedNodes.Clear();
         _unOccupiedNodes = node.GetNeighbours();
         _pickedNode = _nullNode;
-        Vector2Int rand = _wRand.GetRandom(_unOccupiedNodes);
+        Vector2Int rand;
         for (int i = 0; i < _unOccupiedNodes.Count; i++)
         {    
             if (_unOccupiedNodes.Count == 1)
