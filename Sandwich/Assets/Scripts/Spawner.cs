@@ -68,6 +68,7 @@ public class Spawner : MonoBehaviour
 
     private void PopulateStack()
     {
+        _tempingredientsList.Clear();
         for (int i = 0; i < ingredientsToSpawn.Count; i++)
         {
             _tempingredientsList.Add(ingredientsToSpawn[i]);
@@ -114,75 +115,64 @@ public class Spawner : MonoBehaviour
         int xOffset = _width/2 + Random.Range(-1, 1);
         int zOffset = _height/2 +Random.Range(-1, 1);
         PlaceIngredient(breadSo,xOffset, zOffset);
+        Vector2Int bread1Pos = _grid[xOffset, zOffset].pos;
         List<Vector2Int> possibleBread2Pos = _grid[xOffset, zOffset].GetNeighbours();
+        List<Vector2Int> centerPoint = _grid[_width / 2, _height / 2].GetNeighbours();
+        _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
         int rand = Random.Range(0, possibleBread2Pos.Count);
-        PlaceIngredient(breadSo,possibleBread2Pos[rand].x, possibleBread2Pos[rand].y);
+        PlaceIngredient(breadSo,xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y);
+        Vector2Int bread2Pos = _grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y].pos;
+//        if (UnfoldIngredients(_grid[xOffset, zOffset]))
+//        {
+//            _depth = 0;
+//            if (UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
+//            {
+//                _depth = 0;
+//                
+//                if(itemsOnBoard.Count < _maxIngredients/2)
+//                {
+//                    if(UnfoldIngredients(_grid[xOffset, zOffset]))
+//                    {
+//                        _depth = 0;
+//                        if(itemsOnBoard.Count < _maxIngredients/2)
+//                        {
+//                            if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
+//                            {
+//                                _depth = 0;
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
-        if (UnfoldIngredients(_grid[xOffset, zOffset]))
+        bool flip = false;
+        int i = 0;
+        while (itemsOnBoard.Count < _maxIngredients - 2)
         {
-            _depth = 0;
-            if (UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
+            if (i > 10)
             {
-                _depth = 0;
-                
-                if(itemsOnBoard.Count < _maxIngredients/2)
+                break;
+            } 
+            if (flip)
+            {
+                if(UnfoldIngredients(_grid[bread2Pos.x, bread2Pos.y]))
                 {
-                    if(UnfoldIngredients(_grid[xOffset, zOffset]))
-                    {
-                        _depth = 0;
-                        if(itemsOnBoard.Count < _maxIngredients/2)
-                        {
-                            if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
-                            {
-                                _depth = 0;
-                            }
-                        }
-                    }
+                    _depth = 0;
+                    _wRand.ResetWeights();
                 }
             }
+            else
+            {
+                if(UnfoldIngredients(_grid[bread1Pos.x, bread1Pos.y]))
+                {
+                    _depth = 0;
+                    _wRand.ResetWeights();
+                }
+            }
+            i++;
+            flip = !flip;
         }
-//        Debug.Log("Gonna start Loop now");
-//        Debug.Break();
-//        bool flip = false;
-//        int i = 0;
-//        while (_ingredientsSpawned < _maxIngredients)
-//        {
-//            Debug.Log("Loop started: Count:  " + i);
-//            Debug.Break();
-//
-//            if (flip)
-//            {
-//                Debug.Log("Recursion Started:  " + i);
-//                Debug.Break();
-//
-//
-//                if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
-//                {
-//                    _depth = 0;
-//                }
-//                Debug.Log("Recursion Ended:  " + i);
-//                Debug.Break();
-//
-//
-//            }
-//            else
-//            {
-//                Debug.Log("Recursion Started:  " + i);
-//                Debug.Break();
-//
-//                if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
-//                {
-//                    _depth = 0;
-//                }
-//                Debug.Log("Recursion Ended:  " + i);
-//                Debug.Break();
-//
-//
-//            }
-//            Debug.Log("Loop Ending" + i);
-//            i++;
-//            flip = !flip;
-//        }
     }
 
     private void PlaceIngredient(IngredientSO data , int xPos, int yPos)
@@ -201,10 +191,9 @@ public class Spawner : MonoBehaviour
         _unOccupiedNodes.Clear();
         _unOccupiedNodes = node.GetNeighbours();
         _pickedNode = _nullNode;
-        _wRand.ResetValues(_unOccupiedNodes, _unOccupiedNodes.Count * 10);
-        Vector2Int rand = new Vector2Int();
+        Vector2Int rand = _wRand.GetRandom(_unOccupiedNodes);
         for (int i = 0; i < _unOccupiedNodes.Count; i++)
-        {
+        {    
             if (_unOccupiedNodes.Count == 1)
             {
                 float coinToss = Random.value;
@@ -213,10 +202,10 @@ public class Spawner : MonoBehaviour
                     return true;
                 }
             }
-            rand = _wRand.GetRandom();
-            if (!_grid[rand.x, rand.y].hasIngredient)
+            rand = _wRand.GetRandom(_unOccupiedNodes);
+            if (!_grid[node.pos.x + rand.x,node.pos.y + rand.y].hasIngredient)
             {
-                _pickedNode = rand;
+                _pickedNode = node.pos + rand;
                 break;
             }
             _unOccupiedNodes.Remove(rand);
