@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -40,26 +41,42 @@ public class Spawner : MonoBehaviour
     //private static int _ingredientsSpawned = 0;
 
     public static List<GameObject> itemsOnBoard = new List<GameObject>();
+    private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
+
     
     private void Awake()
     {
         _wRand = new WeightedRandom<Vector2Int>();
         
         _ingredientStack = new Stack<IngredientSO>();
+        
+        _grid = new Node[widthMinMax.y,heightMinMax.y];
+
         PopulateStack();
 
+        RandomizeBoard();
+
+        CreateGrid();
+    }
+
+    private void RandomizeBoard()
+    {
         _height = Random.Range(heightMinMax.x, heightMinMax.y);
         _width = Random.Range(widthMinMax.x, widthMinMax.y);
         _maxIngredients = Random.Range(ingredientMinMax.x, ingredientMinMax.y);
-        
-        CreateGrid();
     }
 
     private void PopulateStack()
     {
         for (int i = 0; i < ingredientsToSpawn.Count; i++)
         {
-            _ingredientStack.Push(ingredientsToSpawn[i]);
+            _tempingredientsList.Add(ingredientsToSpawn[i]);
+        }
+        for (int i = 0; i < _tempingredientsList.Count; i++)
+        {
+            int rand = Random.Range(0, _tempingredientsList.Count);
+            _ingredientStack.Push(_tempingredientsList[rand]);
+            _tempingredientsList.Remove(_tempingredientsList[rand]);
         }
     }
 
@@ -69,7 +86,7 @@ public class Spawner : MonoBehaviour
         //Debug.Log("Creating Grid");
         //Debug.Break();
 
-        _grid = new Node[_width,_height];
+        //_grid = new Node[_width,_height];
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)
@@ -86,19 +103,16 @@ public class Spawner : MonoBehaviour
         var transform1 = go.transform;
         transform1.parent = this.transform;
         transform1.position = new Vector3(x,0,y);
-        go.pos = new Vector2Int(x,y);
+        go.pos.x = x;
+        go.pos.y = y;
         _grid[x, y] = go;
     }
 
     [ContextMenu("GeneratePattern")]
     private void GeneratePattern()
     {
-        //Debug.Log("Starting Pattern generation");
-        //Debug.Break();
-
-        //int breadPos = Random.Range((size/2 - 1), (size/2 + 1));
-        int xOffset = _width/2 + GetAxisRange();
-        int zOffset = _height/2 + GetAxisRange();
+        int xOffset = _width/2 + Random.Range(-1, 1);
+        int zOffset = _height/2 +Random.Range(-1, 1);
         PlaceIngredient(breadSo,xOffset, zOffset);
         List<Vector2Int> possibleBread2Pos = _grid[xOffset, zOffset].GetNeighbours();
         int rand = Random.Range(0, possibleBread2Pos.Count);
@@ -113,7 +127,7 @@ public class Spawner : MonoBehaviour
                 
                 if(itemsOnBoard.Count < _maxIngredients/2)
                 {
-                    if(UnfoldIngredients(_grid[possibleBread2Pos[rand].x, possibleBread2Pos[rand].y]))
+                    if(UnfoldIngredients(_grid[xOffset, zOffset]))
                     {
                         _depth = 0;
                         if(itemsOnBoard.Count < _maxIngredients/2)
@@ -220,18 +234,17 @@ public class Spawner : MonoBehaviour
     {
         _grid[x, y].hasIngredient = true;
     }
-
-    int GetAxisRange()
-    {
-        return Mathf.RoundToInt(Random.Range(-1f, 1f));
-    }
-
+    
     [ContextMenu("ResetGame")]
     public void ResetGame()
     {
-        foreach (var node in _grid)
+        for (int y = 0; y < _height; y++)
         {
-            node.hasIngredient = false;
+            for (int x = 0; x < _width; x++)
+            {
+                Destroy(_grid[x, y].gameObject);
+                _grid[x, y] = null;
+            }
         }
         foreach (var item in itemsOnBoard)
         {
@@ -241,7 +254,9 @@ public class Spawner : MonoBehaviour
 
         _ingredientStack.Clear();
         PopulateStack();
-        GeneratePattern();
+        RandomizeBoard();
+        CreateGrid();
+        //GeneratePattern();
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
     }
 

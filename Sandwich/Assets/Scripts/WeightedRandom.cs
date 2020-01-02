@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class WeightedRandom<T> where T : struct
 {
-    private Dictionary<T, float> _weights;
-    private List<T> _values;
+    private readonly Dictionary<T, float> _weights;
+    private readonly List<T> _values;
     float _strength;
-    private float _reRollThreshold = 70f;
+    private readonly float _reRollThreshold = 70f;
 
     public void ResetValues(List<T> variables, float strength)
     {
