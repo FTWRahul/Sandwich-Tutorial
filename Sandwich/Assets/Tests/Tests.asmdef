@@ -2,12 +2,11 @@
     "name": "Tests",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "GameAssembly"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "Android"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [

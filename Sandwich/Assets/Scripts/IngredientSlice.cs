@@ -28,6 +28,16 @@ public class IngredientSlice : MonoBehaviour
 
     private void DelayedDrop()
     {
-        transform.DOMoveY(0, .5f).SetEase(ingredientData.ease);
+        try
+        {
+            Debug.Log("Trying");
+            transform.DOMoveY(0, .5f).SetEase(ingredientData.ease);
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Caught");
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

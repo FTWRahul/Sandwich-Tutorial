@@ -13,7 +13,9 @@ public class Spawner : MonoBehaviour
     private static int _width;
     private int _maxIngredients;
     private Node[,] _grid;
-    
+
+    public Node[,] Grid => _grid;
+
     //Getter Properties
     public static int Width => _width;
     public static int Height => _height;
@@ -95,6 +97,8 @@ public class Spawner : MonoBehaviour
                 CreateNode(x, y);
             }
         }
+        List<Vector2Int> centerPoint = _grid[_width / 2, _height / 2].GetNeighbours();
+        _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
         GeneratePattern();
     }
 
@@ -117,8 +121,7 @@ public class Spawner : MonoBehaviour
         PlaceIngredient(breadSo,xOffset, zOffset);
         Vector2Int bread1Pos = _grid[xOffset, zOffset].pos;
         List<Vector2Int> possibleBread2Pos = _grid[xOffset, zOffset].GetNeighbours();
-        List<Vector2Int> centerPoint = _grid[_width / 2, _height / 2].GetNeighbours();
-        _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
+
         int rand = Random.Range(0, possibleBread2Pos.Count);
         PlaceIngredient(breadSo,xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y);
         Vector2Int bread2Pos = _grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y].pos;
