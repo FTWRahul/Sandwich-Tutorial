@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -27,6 +28,7 @@ public class TouchManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             RaycastHit hit;
+            Debug.Log("Touch Detected");
             _recievedTouch = Input.GetTouch(0);
             Ray ray = _mainCam.ScreenPointToRay(_recievedTouch.position);
             if (Physics.Raycast(ray, out hit))
@@ -34,24 +36,35 @@ public class TouchManager : MonoBehaviour
                 IRespondToTouch hitRisponder = null;
                 if (_itemTouched == null)
                 {
-                    hitRisponder = hit.transform.GetComponent<IRespondToTouch>();
-                    _itemTouched = hitRisponder;
+                    try
+                    {
+                        hitRisponder = hit.transform.GetComponent<IRespondToTouch>();
+                        _itemTouched = hitRisponder;
+                        Debug.Log("What did I TOUCH!?" + _itemTouched);
+                        _startPoint = hit.point;
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        Debug.Log("Caught no script found");
+                        Console.WriteLine(e);
+                        //throw;
+                    }
+                    finally
+                    {
+                        Debug.Log("Initial Ray Hit at " + hit.point);
+                    }
                 }
                 else if (_itemTouched != null)
                 {
-                    if (_recievedTouch.phase == TouchPhase.Began)
-                    {
-                        _startPoint = _mainCam.ScreenToWorldPoint(_recievedTouch.position);
-                    }
-
                     if (_recievedTouch.phase == TouchPhase.Ended || _recievedTouch.phase == TouchPhase.Canceled)
                     {
-                        _endPoint = _mainCam.ScreenToWorldPoint(_recievedTouch.position);
-                        Vector3 swipeDirection = _endPoint - _startPoint;
+                        _endPoint = hit.point;
+                        Vector3 swipeDirection = (_endPoint - _startPoint);
+                        //swipeDirection = new Vector3(swipeDirection.x - _startPoint.x, swipeDirection.y - _startPoint.y, swipeDirection.z - _startPoint.z);
+
                         if (swipeDirection.magnitude >= _deadZone)
                         {
                             _itemTouched.AttemptFlip(swipeDirection);
-                            
                         }
                         _itemTouched = null;
                     }

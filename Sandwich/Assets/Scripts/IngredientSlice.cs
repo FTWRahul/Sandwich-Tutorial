@@ -25,19 +25,19 @@ public class IngredientSlice : MonoBehaviour , IRespondToTouch
         gameObject.name = ingredientData.ingredientName;
         float randomDelay = Random.value;
         _node = node;
-        Invoke("DelayedDrop", randomDelay);
+        Invoke(nameof(DelayedDrop), randomDelay);
     }
 
     private void DelayedDrop()
     {
         try
         {
-            Debug.Log("Trying");
+           // Debug.Log("Trying");
             transform.DOMoveY(0, .5f).SetEase(ingredientData.ease);
         }
         catch (Exception e)
         {
-            Debug.Log("Caught");
+           // Debug.Log("Caught");
             Console.WriteLine(e);
             throw;
         }
@@ -45,17 +45,51 @@ public class IngredientSlice : MonoBehaviour , IRespondToTouch
 
     public void AttemptFlip(Vector3 dir)
     {
+        Debug.Log("TouchResponse from node " + _node.pos);
         List<Vector2Int> neighbouringNodes = _node.GetNeighbours();
         for (int i = 0; i < neighbouringNodes.Count; i++)
         {
             neighbouringNodes[i] += _node.pos;
         }
+        
         float right = Vector3.Angle(dir, Vector3.right);
-        float left = Vector3.Angle(dir, Vector3.left);
-        float up = Vector3.Angle(dir, Vector3.up);
-        float down = Vector3.Angle(dir, Vector3.down);
+        float left = Vector3.Angle(dir,  Vector3.left);
+        float up = Vector3.Angle(dir, Vector3.forward);
+        float down = Vector3.Angle(dir, Vector3.back);
         
+        float a = GetSmaller(right, left);
+        float b = GetSmaller(up, down);
+        float final = GetSmaller(a, b);
+
+        if (final == right)
+        {
+            Debug.Log("Flip Right");
+        }
+        else if (final == left)
+        {
+            Debug.Log("Flip Left");
+        }
+        else if (final == up)
+        {
+            Debug.Log("Flip Up");
+        }
+        else
+        {
+            Debug.Log("Flip Down");
+        }
         
+    }
+
+    float GetSmaller(float a, float b)
+    {
+        if (a < b)
+        {
+            return a;
+        }
+        else
+        {
+            return b;
+        }
     }
 }
 

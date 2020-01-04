@@ -195,7 +195,7 @@ public class Spawner : MonoBehaviour
             return true;
         }
         _depth++;
-        PlaceIngredient(node ,_ingredientStack.Pop(), _pickedNode.x, _pickedNode.y);
+        PlaceIngredient(_grid[_pickedNode.x, _pickedNode.y] ,_ingredientStack.Pop(), _pickedNode.x, _pickedNode.y);
         return UnfoldIngredients(_grid[_pickedNode.x, _pickedNode.y]);
     }
     
