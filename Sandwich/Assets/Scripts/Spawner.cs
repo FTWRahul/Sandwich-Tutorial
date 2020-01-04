@@ -118,12 +118,12 @@ public class Spawner : MonoBehaviour
     {
         int xOffset = _width/2 + Random.Range(-1, 1);
         int zOffset = _height/2 +Random.Range(-1, 1);
-        PlaceIngredient(breadSo,xOffset, zOffset);
+        PlaceIngredient(_grid[xOffset, zOffset],breadSo,xOffset, zOffset);
         Vector2Int bread1Pos = _grid[xOffset, zOffset].pos;
         List<Vector2Int> possibleBread2Pos = _grid[xOffset, zOffset].GetNeighbours();
 
         int rand = Random.Range(0, possibleBread2Pos.Count);
-        PlaceIngredient(breadSo,xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y);
+        PlaceIngredient(_grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y] ,breadSo,xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y);
         Vector2Int bread2Pos = _grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y].pos;
 
         bool flip = false;
@@ -155,12 +155,12 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void PlaceIngredient(IngredientSO data , int xPos, int yPos)
+    private void PlaceIngredient(Node node ,IngredientSO data , int xPos, int yPos)
     {
         IngredientSlice slice = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<IngredientSlice>();
         slice.transform.position = new Vector3(xPos, 10, yPos);
         slice.ingredientData = data;
-        slice.Init();
+        slice.Init(node);
         ToggleNode(xPos, yPos);
         //_ingredientsSpawned++;
         itemsOnBoard.Add(slice.gameObject);
@@ -195,7 +195,7 @@ public class Spawner : MonoBehaviour
             return true;
         }
         _depth++;
-        PlaceIngredient(_ingredientStack.Pop(), _pickedNode.x, _pickedNode.y);
+        PlaceIngredient(node ,_ingredientStack.Pop(), _pickedNode.x, _pickedNode.y);
         return UnfoldIngredients(_grid[_pickedNode.x, _pickedNode.y]);
     }
     

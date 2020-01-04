@@ -15,12 +15,29 @@ namespace Tests
         {
             var spawner = CreateSpawner();
             yield return null;
+            bool returnBool = true;
             for (int i = 0; i < Spawner.Height; i++)
             {
                 for (int j = 0; j < Spawner.Width; j++)
                 {
-                    Assert.NotNull(spawner.Grid[j,i]);
+                    if (spawner.Grid[j, i] == null)
+                    {
+                        returnBool = false;
+                        break;
+                    }
                 }
+                if (returnBool == false)
+                {
+                    break;
+                }
+            }
+            if (returnBool)
+            {
+                Assert.Pass();
+            }
+            else
+            {
+                Assert.Fail();
             }
         }
         [UnityTest]
