@@ -8,7 +8,7 @@ public class CameraPlacement : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        PlaceCamera();
+        //PlaceCamera();
     }
 
     public void PlaceCamera()

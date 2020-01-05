@@ -104,8 +104,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1146967552807902819}
   - component: {fileID: 1146967552807902818}
+  - component: {fileID: 838657473}
   m_Layer: 0
-  m_Name: Spawnner
+  m_Name: Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,3 +153,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4caebf21274236445af4df599e809844, type: 2}
   - {fileID: 11400000, guid: dee4e182670461b498a068c55dd2e42a, type: 2}
   - {fileID: 11400000, guid: 455063b91a470ff4288050a4ed1314ca, type: 2}
+--- !u!114 &838657473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146967552807902844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 145a984e6b43453688c66401c623afde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawner: {fileID: 1146967552807902818}

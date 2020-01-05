@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-
     Touch _recievedTouch;
     Vector3 _startPoint;
     Vector3 _endPoint;
@@ -15,11 +14,9 @@ public class TouchManager : MonoBehaviour
 
     private Camera _mainCam;
     
-    // Start is called before the first frame update
     void Awake()
     {
         _mainCam = Camera.main;
-        //inputActions = new TouchInputActions();
     }
 
     // Update is called once per frame
@@ -28,7 +25,6 @@ public class TouchManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             RaycastHit hit;
-            //Debug.Log("Touch Detected");
             _recievedTouch = Input.GetTouch(0);
             Ray ray = _mainCam.ScreenPointToRay(_recievedTouch.position);
             if (Physics.Raycast(ray, out hit))
@@ -40,12 +36,10 @@ public class TouchManager : MonoBehaviour
                     {
                         hitRisponder = hit.transform.GetComponent<IRespondToTouch>();
                         _itemTouched = hitRisponder;
-                        //Debug.Log("What did I TOUCH!?" + _itemTouched);
                         _startPoint = hit.point;
                     }
                     catch (NullReferenceException e)
                     {
-                        //Debug.Log("Caught no script found");
                         Console.WriteLine(e);
                     }
                 }
@@ -55,8 +49,6 @@ public class TouchManager : MonoBehaviour
                     {
                         _endPoint = hit.point;
                         Vector3 swipeDirection = (_endPoint - _startPoint);
-                        //swipeDirection = new Vector3(swipeDirection.x - _startPoint.x, swipeDirection.y - _startPoint.y, swipeDirection.z - _startPoint.z);
-
                         if (swipeDirection.magnitude >= _deadZone)
                         {
                             _itemTouched.AttemptFlip(swipeDirection);

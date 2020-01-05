@@ -20,12 +20,10 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     {
         try
         {
-            // Debug.Log("Trying");
             transform.DOMoveY(0, .5f).SetEase(_slice.ingredientData.ease);
         }
         catch (Exception e)
         {
-            // Debug.Log("Caught");
             Console.WriteLine(e);
             throw;
         }
@@ -65,7 +63,6 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         {
             Debug.Log("Flip Down");
         }
-        
     }
 
     float GetSmaller(float a, float b)
