@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Extensions;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class Spawner : MonoBehaviour
+public interface IPatternGenerator
+{
+    void GeneratePattern();
+    bool UnfoldIngredients(Node node);
+}
+
+public class Spawner : MonoBehaviour, IPatternGenerator
 {
     //Grid variables
     private static int _height;
@@ -40,12 +45,10 @@ public class Spawner : MonoBehaviour
     private WeightedRandom<Vector2Int> _wRand;
     
     private static int _depth = 0;
-    //private static int _ingredientsSpawned = 0;
 
     public static List<GameObject> itemsOnBoard = new List<GameObject>();
     private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
 
-    
     private void Awake()
     {
         _wRand = new WeightedRandom<Vector2Int>();
@@ -86,10 +89,6 @@ public class Spawner : MonoBehaviour
     [ContextMenu("CreateGrid")]
     void CreateGrid()
     {
-        //Debug.Log("Creating Grid");
-        //Debug.Break();
-
-        //_grid = new Node[_width,_height];
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)
@@ -97,9 +96,9 @@ public class Spawner : MonoBehaviour
                 CreateNode(x, y);
             }
         }
-        List<Vector2Int> centerPoint = _grid[_width / 2, _height / 2].GetNeighbours();
-        _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
-        GeneratePattern();
+//        List<Vector2Int> centerPoint = _grid[_width / 2, _height / 2].GetNeighbours();
+//        _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
+        //GeneratePattern();
     }
 
     private void CreateNode(int x, int y)
@@ -114,7 +113,7 @@ public class Spawner : MonoBehaviour
     }
 
     [ContextMenu("GeneratePattern")]
-    private void GeneratePattern()
+    public void GeneratePattern()
     {
         int xOffset = _width/2 + Random.Range(-1, 1);
         int zOffset = _height/2 +Random.Range(-1, 1);
@@ -158,6 +157,7 @@ public class Spawner : MonoBehaviour
     private void PlaceIngredient(Node node ,IngredientSO data , int xPos, int yPos)
     {
         IngredientSlice slice = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<IngredientSlice>();
+        slice.gameObject.AddComponent<IngredientFlipper>();
         slice.transform.position = new Vector3(xPos, 10, yPos);
         slice.ingredientData = data;
         slice.Init(node);
@@ -166,7 +166,7 @@ public class Spawner : MonoBehaviour
         itemsOnBoard.Add(slice.gameObject);
     }
 
-    private bool UnfoldIngredients(Node node)
+    public bool UnfoldIngredients(Node node)
     {
         _unOccupiedNodes.Clear();
         _unOccupiedNodes = node.GetNeighbours();
@@ -229,11 +229,4 @@ public class Spawner : MonoBehaviour
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ResetGame();
-        }
-    }
 }

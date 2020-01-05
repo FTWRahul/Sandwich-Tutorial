@@ -28,7 +28,7 @@ public class TouchManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             RaycastHit hit;
-            Debug.Log("Touch Detected");
+            //Debug.Log("Touch Detected");
             _recievedTouch = Input.GetTouch(0);
             Ray ray = _mainCam.ScreenPointToRay(_recievedTouch.position);
             if (Physics.Raycast(ray, out hit))
@@ -40,18 +40,13 @@ public class TouchManager : MonoBehaviour
                     {
                         hitRisponder = hit.transform.GetComponent<IRespondToTouch>();
                         _itemTouched = hitRisponder;
-                        Debug.Log("What did I TOUCH!?" + _itemTouched);
+                        //Debug.Log("What did I TOUCH!?" + _itemTouched);
                         _startPoint = hit.point;
                     }
                     catch (NullReferenceException e)
                     {
-                        Debug.Log("Caught no script found");
+                        //Debug.Log("Caught no script found");
                         Console.WriteLine(e);
-                        //throw;
-                    }
-                    finally
-                    {
-                        Debug.Log("Initial Ray Hit at " + hit.point);
                     }
                 }
                 else if (_itemTouched != null)
