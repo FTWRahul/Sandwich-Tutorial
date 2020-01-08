@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Salad
   tempColor: {r: 0.5270676, g: 0.9245283, b: 0, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25

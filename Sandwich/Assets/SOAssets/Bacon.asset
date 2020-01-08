@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Bacon
   tempColor: {r: 0.8867924, g: 0.31476992, b: 0.09620863, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25

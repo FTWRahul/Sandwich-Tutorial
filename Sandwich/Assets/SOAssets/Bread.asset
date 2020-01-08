@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Bread
   tempColor: {r: 0.8679245, g: 0.78533304, b: 0.64275545, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25

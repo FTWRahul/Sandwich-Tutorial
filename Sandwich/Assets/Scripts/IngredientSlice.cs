@@ -11,7 +11,11 @@ public class IngredientSlice : MonoBehaviour
     MeshRenderer _mRenderer;
     private Node _node;
 
-    public Node Node => _node;
+    public Node Node
+    {
+        get { return _node; }
+        set { _node = value; }
+    }
 
     private void Awake()
     {
@@ -23,7 +27,7 @@ public class IngredientSlice : MonoBehaviour
     public void Init(Node node)
     {
         _mRenderer.material.SetColor("_BaseColor", ingredientData.tempColor);
-        transform.localScale = new Vector3(1, .5f, 1);
+        transform.localScale = new Vector3(1, .25f, 1);
         gameObject.name = ingredientData.ingredientName;
         _node = node;
     }

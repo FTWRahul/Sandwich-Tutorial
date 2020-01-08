@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Burger Patty
   tempColor: {r: 0.6226415, g: 0.17852955, b: 0, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25

@@ -19,6 +19,11 @@ public class TouchManager : MonoBehaviour
         _mainCam = Camera.main;
     }
 
+    public void ResetIResponder()
+    {
+        _itemTouched = null;
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -57,6 +62,11 @@ public class TouchManager : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (Input.touchCount < 0)
+        {
+            _itemTouched = null;
         }
     }
 }

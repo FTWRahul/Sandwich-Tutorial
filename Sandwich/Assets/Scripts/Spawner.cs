@@ -13,17 +13,10 @@ public class Spawner : MonoBehaviour
     public static int Width => GridConstructor._width;
     public static int Height => GridConstructor._height;
     
-    public int MaxIngredients
-    {
-        //set { _maxIngredients = value; }
-        get { return gridConstructor._maxIngredients; }
-    }
-    
-    public IngredientSO BreadSo
-    {
-        get { return breadSo; }
-    }
-    
+    public int MaxIngredients => gridConstructor._maxIngredients;
+
+    public IngredientSO BreadSo => breadSo;
+
     //Exposed variables in inspector
     [SerializeField]
     private Vector2Int heightMinMax;

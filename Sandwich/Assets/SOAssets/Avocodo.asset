@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Avocodo
   tempColor: {r: 0.7918755, g: 0.9245283, b: 0.6497864, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25

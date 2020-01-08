@@ -15,3 +15,5 @@ MonoBehaviour:
   ingredientName: Egg
   tempColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 0}
   ease: 6
+  model: {fileID: 0}
+  modelHeight: 0.25
