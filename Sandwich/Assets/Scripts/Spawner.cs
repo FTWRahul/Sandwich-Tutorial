@@ -35,6 +35,7 @@ public class Spawner : MonoBehaviour
     
     public static List<IngredientSlice> itemsOnBoard = new List<IngredientSlice>();
     private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
+    public static List<ICommand> commands = new List<ICommand>();
 
     private void Awake()
     {
@@ -117,4 +118,35 @@ public class Spawner : MonoBehaviour
         patternGeneration.GeneratePattern();
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
     }
+
+    public void Retry()
+    {
+        StartCoroutine(UnfoldProper());
+    }
+
+    public void Undo()
+    {
+        if (commands.Count > 0)
+        {
+            int i = commands.Count - 1;
+            commands[i].Undo(.5f);
+            commands.Remove(commands[i]);
+        }
+    }
+
+    public IEnumerator UnfoldProper()
+    {
+        for (int i = commands.Count; i > 0; i--)
+        {
+            Debug.Log("I = " + (i - 1));
+            commands[i -1 ].Undo(.2f);
+            yield return new WaitForSeconds(.2f);
+            commands.Remove(commands[(i - 1)]);
+        }
+        foreach (var item in itemsOnBoard)
+        {
+            item.GetComponent<IngredientFlipper>().stackCount = 0;
+        }
+    }
+    
 }

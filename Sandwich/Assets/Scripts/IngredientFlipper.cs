@@ -9,36 +9,25 @@ using Random = UnityEngine.Random;
 public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 {
     private IngredientSlice _slice;
-    private IngredientSlice _nextSlice;
+    [HideInInspector]
+    public IngredientSlice nextSlice;
     private Sequence _nudgeSequence;
     private Sequence _flipSequence;
     private Vector2Int _selectedNeighbour;
 
     [HideInInspector]
     public int stackCount = 0;
-    public int childCount = 0;
-    
-    private static List<IngredientFlipper> _ingredientFlippers = new List<IngredientFlipper>();
     
     private void Start()
     {
-        _ingredientFlippers.Add(this);
-        //Debug.Log(_ingredientFlippers.Count);
-
         _nudgeSequence = DOTween.Sequence();
-        _flipSequence = DOTween.Sequence();
+        //_flipSequence = DOTween.Sequence();
         
         _slice = GetComponent<IngredientSlice>();
         float randomDelay = Random.value;
         Invoke(nameof(DelayedDrop), randomDelay);
     }
-
-    private void OnDisable()
-    {
-        _ingredientFlippers.Remove(this);
-        //Debug.Log("Removed "+ _ingredientFlippers.Count);
-    }
-
+    
     private void DelayedDrop()
     {
         try
@@ -54,23 +43,23 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     
     public void AttemptFlip(Vector3 dir)
     {
-        Debug.Log("Swipe Object name = " + gameObject.name);
+        //Debug.Log("Swipe Object name = " + gameObject.name);
         if (transform.parent != null)
         {
-            Debug.Log("parent object found");
-            Debug.Log("Parent object name = "+ transform.parent.gameObject.name);
+            //Debug.Log("parent object found");
+            //Debug.Log("Parent object name = "+ transform.parent.gameObject.name);
             if (transform.GetComponentInParent<IRespondToTouch>() != null)
             {
-                Debug.Log("Found component in parent");
-                _nextSlice.GetComponent<IRespondToTouch>().AttemptFlip(dir);
+                //Debug.Log("Found component in parent");
+                nextSlice.GetComponent<IRespondToTouch>().AttemptFlip(dir);
                 //transform.GetComponentInParent<IRespondToTouch>().AttemptFlip(dir);
                 return;
             }
-            Debug.Log("Did not find component in parent");
+            //Debug.Log("Did not find component in parent");
         }
-        Debug.Log("parent object not found");
+        //Debug.Log("parent object not found");
         
-        Debug.Log("TouchResponse from node " + _slice.Node.pos);
+        //Debug.Log("TouchResponse from node " + _slice.Node.pos);
         List<Vector2Int> neighbouringNodes = _slice.Node.GetNeighbours();
         
         Vector3 swipeDirection = GetSwipeDirection(dir);
@@ -97,57 +86,26 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
                 {
                     if (Spawner.itemsOnBoard[i].Node.pos == _selectedNeighbour)
                     {
-                        _nextSlice = Spawner.itemsOnBoard[i];
+                        nextSlice = Spawner.itemsOnBoard[i];
                         break;
                     }
                 }
             }
-
-            //Get child count of the current slice
-            //get child count of the next slice
-            //float displacement = GetComponentsInChildren<IngredientFlipper>().Length + _nextSlice.GetComponentsInChildren<IngredientFlipper>().Length;
-            //int currentChildCount = GetTreeChildCountReal(transform);
-            //childCount = 0;
-            //int nextChildCount = GetTreeChildCountReal(_nextSlice.transform) + 1;
-            //childCount = 0;
-            
-            
-            Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
-            Debug.Log("Next Stack count for object = " + _nextSlice.gameObject.name + "  " + _nextSlice.GetComponent<IngredientFlipper>().stackCount);
-            int displacement = stackCount + (_nextSlice.GetComponent<IngredientFlipper>().stackCount + 1);
-            //Debug.Log("My stack count = " +gameObject.name + "    "+ this.stackCount);
-            StartCoroutine(FlipSlice(flipDirection, _nextSlice, displacement));
-            _nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
         }
-        else
+        if (nextSlice != null)
         {
-            StartCoroutine(NudgeSlice(flipDirection));
+            Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
+            Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextSlice.GetComponent<IngredientFlipper>().stackCount);
+            int displacement = stackCount + (nextSlice.GetComponent<IngredientFlipper>().stackCount + 1);
+            ICommand swipeCommand = new SwipeCommand(_slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, displacement);
+            swipeCommand.Execute();
+            Spawner.commands.Add(swipeCommand);
+            Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
+            //StartCoroutine(FlipSlice(flipDirection, _nextSlice, displacement));
+            nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
+            return;
         }
-    }
-
-//    public int GetTreeChildCountReal( Transform inTransform)
-//    {
-//        if (inTransform.childCount > 0)
-//        {
-//            childCount += inTransform.childCount;
-//
-//            return GetTreeChildCountReal(inTransform.GetChild(0));
-//        }
-//        return childCount;
-//    }
-
-    private IEnumerator FlipSlice(Vector3 dir, IngredientSlice next, float yDisplacement)
-    {
-        _flipSequence.Complete();
-        Debug.Log("YDISPLACEMENT =" + yDisplacement);
-        //Debug.Log("Model Height =" + IngredientSO.ModelHeight);
-        Vector3 pos = next.transform.position;
-        _flipSequence.Prepend(transform.DOJump(new Vector3(pos.x, yDisplacement * .25f, pos.z), (yDisplacement * .25f) + 1, 1, .5f)
-                .SetEase(Ease.OutQuad));
-        _flipSequence.Join(transform.DORotate(dir * 180, .5f));
-        yield return new WaitForSeconds(.6f);
-        transform.parent = _nextSlice.transform;
-        _slice.Node = null;
+        StartCoroutine(NudgeSlice(flipDirection));
     }
     
     private IEnumerator NudgeSlice(Vector3 dir)

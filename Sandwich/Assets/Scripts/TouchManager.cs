@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
-    Touch _recievedTouch;
-    Vector3 _startPoint;
-    Vector3 _endPoint;
+    private Touch _receivedTouch;
+    private Vector3 _startPoint;
+    private Vector3 _endPoint;
     private IRespondToTouch _itemTouched;
     [SerializeField] private float _deadZone;
 
@@ -30,8 +30,8 @@ public class TouchManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             RaycastHit hit;
-            _recievedTouch = Input.GetTouch(0);
-            Ray ray = _mainCam.ScreenPointToRay(_recievedTouch.position);
+            _receivedTouch = Input.GetTouch(0);
+            Ray ray = _mainCam.ScreenPointToRay(_receivedTouch.position);
             if (Physics.Raycast(ray, out hit))
             {
                 IRespondToTouch hitRisponder = null;
@@ -50,7 +50,7 @@ public class TouchManager : MonoBehaviour
                 }
                 else if (_itemTouched != null)
                 {
-                    if (_recievedTouch.phase == TouchPhase.Ended || _recievedTouch.phase == TouchPhase.Canceled)
+                    if (_receivedTouch.phase == TouchPhase.Ended || _receivedTouch.phase == TouchPhase.Canceled)
                     {
                         _endPoint = hit.point;
                         Vector3 swipeDirection = (_endPoint - _startPoint);
