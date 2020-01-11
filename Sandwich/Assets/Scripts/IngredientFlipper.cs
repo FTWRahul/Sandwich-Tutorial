@@ -58,7 +58,10 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             //Debug.Log("Did not find component in parent");
         }
         //Debug.Log("parent object not found");
-        
+        if (nextSlice != null)
+        {
+            return;
+        }
         //Debug.Log("TouchResponse from node " + _slice.Node.pos);
         List<Vector2Int> neighbouringNodes = _slice.Node.GetNeighbours();
         
@@ -97,7 +100,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
             Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextSlice.GetComponent<IngredientFlipper>().stackCount);
             int displacement = stackCount + (nextSlice.GetComponent<IngredientFlipper>().stackCount + 1);
-            ICommand swipeCommand = new SwipeCommand(_slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, displacement);
+            ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, displacement);
             swipeCommand.Execute();
             Spawner.commands.Add(swipeCommand);
             Debug.Log("Spawwner confirmation " + Spawner.commands.Count);

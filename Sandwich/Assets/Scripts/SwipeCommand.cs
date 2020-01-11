@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SwipeCommand : ICommand
 {
+    private IngredientFlipper _ingredientFlipper;
     private IngredientSlice _slice;
     private IngredientSlice _nextSlice;
     private Vector3 _initialPosition;
@@ -15,7 +16,7 @@ public class SwipeCommand : ICommand
 
     private int _stackCount = 0;
 
-    public SwipeCommand(IngredientSlice slice, IngredientSlice nextSlice, Vector3 initialPosition,Quaternion initialRotation, Vector3 flipDirection, Node node, int stackCount)
+    public SwipeCommand(IngredientFlipper ingredientFlipper , IngredientSlice slice, IngredientSlice nextSlice, Vector3 initialPosition,Quaternion initialRotation, Vector3 flipDirection, Node node, int stackCount)
     {
         _slice = slice;
         _nextSlice = nextSlice;
@@ -24,6 +25,7 @@ public class SwipeCommand : ICommand
         _node = node;
         _stackCount = stackCount;
         _initialRotation = initialRotation;
+        _ingredientFlipper = ingredientFlipper;
     }
 
     public void Execute()
@@ -33,10 +35,10 @@ public class SwipeCommand : ICommand
 
     private async void FlipSlice(Vector3 dir, IngredientSlice next, float yDisplacement)
     {
+        Spawner.canUndo = false;
         _flipSequence = DOTween.Sequence();
         _flipSequence.Complete();
         _slice.Node = null;
-        //Debug.Log("Model Height =" + IngredientSO.ModelHeight);
         Vector3 pos = next.transform.position;
         _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, yDisplacement * .25f, pos.z), (yDisplacement * .25f), 1, .5f)
             .SetEase(Ease.OutQuad));
@@ -51,24 +53,21 @@ public class SwipeCommand : ICommand
         _flipSequence.Complete();
         _slice.transform.parent = null;
         _slice.Node = _node;
-        _slice.GetComponent<IngredientFlipper>().nextSlice = null;
-        //ResetRotation();
-        _slice.GetComponent<IngredientFlipper>().stackCount = 0;
-        _nextSlice.GetComponent<IngredientFlipper>().stackCount = 0;
-        //Debug.Log("Model Height =" + IngredientSO.ModelHeight);
+        _ingredientFlipper.nextSlice = null;
         Vector3 pos = next;
-        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, yDisplacement * .25f, pos.z), (yDisplacement * .25f), 1, speed)
+        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, 0 , pos.z), (yDisplacement * .25f), 1, speed)
             .SetEase(Ease.OutQuad));
         _flipSequence.Join(_slice.transform.DOLocalRotate(dir * 180, speed, RotateMode.WorldAxisAdd));
-        //_flipSequence.Append(_slice.transform.DORotate(Vector3.zero, .01f));
-        await Task.Delay(100);
+        _ingredientFlipper.stackCount = 0;
+        _nextSlice.GetComponent<IngredientFlipper>().stackCount = 0;
+        await Task.Delay(Mathf.RoundToInt((speed + 1) * 1000 ));
         ResetRotation();
     }
 
     private void ToggleAfterDelay()
     {
-        //Task.Delay(600).ContinueWith(t => ToggleAfterDelay());
         _slice.transform.parent = _nextSlice.transform;
+        Spawner.canUndo = true;
     }
 
     private void ResetRotation()
@@ -79,7 +78,7 @@ public class SwipeCommand : ICommand
 
     public void Undo(float speed)
     {
-        FlipSlice(- _flipDirection, _initialPosition, 0, speed);
+        FlipSlice(- _flipDirection, _initialPosition, _stackCount, speed);
     }
    
 }

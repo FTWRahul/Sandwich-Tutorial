@@ -10,7 +10,7 @@ public class TouchManager : MonoBehaviour
     private Vector3 _startPoint;
     private Vector3 _endPoint;
     private IRespondToTouch _itemTouched;
-    [SerializeField] private float _deadZone;
+    [SerializeField] private float _deadZone = .5f;
 
     private Camera _mainCam;
     

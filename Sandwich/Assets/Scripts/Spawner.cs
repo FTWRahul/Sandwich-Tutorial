@@ -36,6 +36,7 @@ public class Spawner : MonoBehaviour
     public static List<IngredientSlice> itemsOnBoard = new List<IngredientSlice>();
     private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
     public static List<ICommand> commands = new List<ICommand>();
+    public static bool canUndo;
 
     private void Awake()
     {
@@ -126,7 +127,7 @@ public class Spawner : MonoBehaviour
 
     public void Undo()
     {
-        if (commands.Count > 0)
+        if (commands.Count > 0 && canUndo)
         {
             int i = commands.Count - 1;
             commands[i].Undo(.5f);
@@ -138,7 +139,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = commands.Count; i > 0; i--)
         {
-            Debug.Log("I = " + (i - 1));
+            //Debug.Log("I = " + (i - 1));
             commands[i -1 ].Undo(.2f);
             yield return new WaitForSeconds(.2f);
             commands.Remove(commands[(i - 1)]);
