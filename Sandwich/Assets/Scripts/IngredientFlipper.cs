@@ -98,14 +98,15 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         if (nextSlice != null)
         {
             Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
-            Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextSlice.GetComponent<IngredientFlipper>().stackCount);
-            int displacement = stackCount + (nextSlice.GetComponent<IngredientFlipper>().stackCount + 1);
-            ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, displacement);
+            var nextStackCount = nextSlice.GetComponent<IngredientFlipper>().stackCount;
+            Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextStackCount);
+            //int displacement = stackCount + (nextStackCount + 1);
+            ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, stackCount, nextStackCount);
             swipeCommand.Execute();
             Spawner.commands.Add(swipeCommand);
             Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
             //StartCoroutine(FlipSlice(flipDirection, _nextSlice, displacement));
-            nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
+            //nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
             return;
         }
         StartCoroutine(NudgeSlice(flipDirection));

@@ -15,8 +15,9 @@ public class SwipeCommand : ICommand
     private Sequence _flipSequence;
 
     private int _stackCount = 0;
+    private int _nextStackCount = 0;
 
-    public SwipeCommand(IngredientFlipper ingredientFlipper , IngredientSlice slice, IngredientSlice nextSlice, Vector3 initialPosition,Quaternion initialRotation, Vector3 flipDirection, Node node, int stackCount)
+    public SwipeCommand(IngredientFlipper ingredientFlipper , IngredientSlice slice, IngredientSlice nextSlice, Vector3 initialPosition,Quaternion initialRotation, Vector3 flipDirection, Node node, int stackCount , int nextStackCount)
     {
         _slice = slice;
         _nextSlice = nextSlice;
@@ -24,13 +25,16 @@ public class SwipeCommand : ICommand
         _flipDirection = flipDirection;
         _node = node;
         _stackCount = stackCount;
+        _nextStackCount = nextStackCount;
         _initialRotation = initialRotation;
         _ingredientFlipper = ingredientFlipper;
     }
 
     public void Execute()
     {
-        FlipSlice(_flipDirection, _nextSlice, _stackCount);
+        int displacement = _stackCount + (_nextStackCount + 1);
+        FlipSlice(_flipDirection, _nextSlice, displacement);
+        _nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
     }
 
     private async void FlipSlice(Vector3 dir, IngredientSlice next, float yDisplacement)
@@ -56,11 +60,11 @@ public class SwipeCommand : ICommand
         _slice.Node = _node;
         _ingredientFlipper.nextSlice = null;
         Vector3 pos = next;
-        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, 0 , pos.z), (yDisplacement * .25f), 1, speed)
+        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, 0 , pos.z), (yDisplacement + .25f), 1, speed)
             .SetEase(Ease.OutQuad));
         _flipSequence.Join(_slice.transform.DOLocalRotate(dir * 180, speed, RotateMode.WorldAxisAdd));
-        _ingredientFlipper.stackCount = 0;
-        _nextSlice.GetComponent<IngredientFlipper>().stackCount = 0;
+        _ingredientFlipper.stackCount = _stackCount;
+        _nextSlice.GetComponent<IngredientFlipper>().stackCount = _nextStackCount;
         await Task.Delay(Mathf.RoundToInt((speed + 1) * 1000 ));
         ResetRotation();
     }
