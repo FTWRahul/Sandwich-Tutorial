@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3696838672288556225}
   - component: {fileID: 3526452615997465861}
   - component: {fileID: 5427507780310058610}
+  - component: {fileID: -1679466441336505147}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &-1679466441336505147
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3696838672288556226}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &3696838672724132509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,7 +156,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 303c6c3c5c8610d4185bc9847d95ca2c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 303c6c3c5c8610d4185bc9847d95ca2c,
         type: 3}
@@ -237,7 +251,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 5842073b3e16a814686294c18d9c6a41,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 5842073b3e16a814686294c18d9c6a41,
         type: 3}
@@ -337,7 +351,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 57b78d1e2212b5c478f8cd6ea43da4f3,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 57b78d1e2212b5c478f8cd6ea43da4f3,
         type: 3}

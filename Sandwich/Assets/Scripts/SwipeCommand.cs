@@ -40,7 +40,7 @@ public class SwipeCommand : ICommand
         _flipSequence.Complete();
         _slice.Node = null;
         Vector3 pos = next.transform.position;
-        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, yDisplacement * .20f, pos.z), (yDisplacement * .20f), 1, .5f)
+        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, (yDisplacement * .25f) + .25f, pos.z), (yDisplacement * .25f), 1, .5f)
             .SetEase(Ease.OutQuad));
         _flipSequence.Join(_slice.transform.DORotate(dir * 180, .5f, RotateMode.WorldAxisAdd));
         await Task.Delay(600);
@@ -56,7 +56,7 @@ public class SwipeCommand : ICommand
         _slice.Node = _node;
         _ingredientFlipper.nextSlice = null;
         Vector3 pos = next;
-        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, 0 , pos.z), (yDisplacement * .20f), 1, speed)
+        _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, 0 , pos.z), (yDisplacement * .25f), 1, speed)
             .SetEase(Ease.OutQuad));
         _flipSequence.Join(_slice.transform.DOLocalRotate(dir * 180, speed, RotateMode.WorldAxisAdd));
         _ingredientFlipper.stackCount = 0;

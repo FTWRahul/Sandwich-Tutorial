@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 570309387196249525}
   - component: {fileID: -3592388434646767480}
   - component: {fileID: 4495879762149803424}
+  - component: {fileID: 4010833709906692582}
   m_Layer: 0
   m_Name: Bread
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &4010833709906692582
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 570309387196249522}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &570309386550098986
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +151,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 2ddd1cdd7c0d5974596a7b2d6e7ea082,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 2ddd1cdd7c0d5974596a7b2d6e7ea082,
         type: 3}
@@ -237,7 +251,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 2f13c26da34c38e46aae26af04240467,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 2f13c26da34c38e46aae26af04240467,
         type: 3}
@@ -342,7 +356,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 8e8df004646ce294caf69046dcfe5002,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 8e8df004646ce294caf69046dcfe5002,
         type: 3}

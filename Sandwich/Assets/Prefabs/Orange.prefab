@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2869674289645958945}
   - component: {fileID: -3170591579126325997}
   - component: {fileID: 1858325783721332873}
+  - component: {fileID: -36386263627940435}
   m_Layer: 0
   m_Name: Orange
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &-36386263627940435
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2869674289645958944}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &2869674289027836347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +151,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 18051c2cf737b474ca261cf33a3d5174,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 18051c2cf737b474ca261cf33a3d5174,
         type: 3}
@@ -242,7 +256,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 54385cf2f6c508b44810037a298c86c6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 54385cf2f6c508b44810037a298c86c6,
         type: 3}
@@ -332,7 +346,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 12f5fe53b68e88048bd7f24e5870321c,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 12f5fe53b68e88048bd7f24e5870321c,
         type: 3}

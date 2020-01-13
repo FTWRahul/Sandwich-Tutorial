@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 783239809215884320}
   - component: {fileID: -9351099285521487}
   - component: {fileID: -6196635657680603627}
+  - component: {fileID: 7163419796563160791}
   m_Layer: 0
   m_Name: RedOnion
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &7163419796563160791
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783239809215884335}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &783239808188552152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +151,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 7d81a1da3a0375a4e8c82042b6f59bde,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 7d81a1da3a0375a4e8c82042b6f59bde,
         type: 3}
@@ -242,7 +256,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: bdbf5a8c7efe12b4fa1310c489da3710,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: bdbf5a8c7efe12b4fa1310c489da3710,
         type: 3}
@@ -332,7 +346,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 59ad450a3cf671e4fbfabeb60c8df63e,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 59ad450a3cf671e4fbfabeb60c8df63e,
         type: 3}

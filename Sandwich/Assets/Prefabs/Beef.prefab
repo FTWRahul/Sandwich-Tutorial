@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2228570030686574705}
   - component: {fileID: -8611867352574195084}
   - component: {fileID: -5577530601428815724}
+  - component: {fileID: 869817399401344941}
   m_Layer: 0
   m_Name: Beef
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &869817399401344941
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2228570030686574707}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &2228570031036929873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -142,7 +156,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 0706552fbb15ccf40b82728a728bb629,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 0706552fbb15ccf40b82728a728bb629,
         type: 3}
@@ -237,7 +251,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 81ff12118d0d7e44c8f87fdb614a14ac,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 81ff12118d0d7e44c8f87fdb614a14ac,
         type: 3}
@@ -342,7 +356,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: a85e8931370ee944d9dd0a842748f17a,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: a85e8931370ee944d9dd0a842748f17a,
         type: 3}

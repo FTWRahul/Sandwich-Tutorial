@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3175051208462909516}
   - component: {fileID: 5716996388943763102}
   - component: {fileID: -6341952723476141735}
+  - component: {fileID: 1382186008088481373}
   m_Layer: 0
   m_Name: Pepper
   m_TagString: Untagged
@@ -62,6 +63,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nextSlice: {fileID: 0}
   stackCount: 0
+--- !u!65 &1382186008088481373
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3175051208462909555}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.25, z: 1}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1001 &3175051208528608158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +151,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 37cca5625fd90c1488ff54f79e26654a,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 37cca5625fd90c1488ff54f79e26654a,
         type: 3}
@@ -237,7 +251,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: fbc0b7c267169574a925739840377edb,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -1992683307241558107, guid: fbc0b7c267169574a925739840377edb,
         type: 3}
@@ -342,7 +356,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 50e4dd24b8bf00d40ae7326b786e3e08,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 5
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 50e4dd24b8bf00d40ae7326b786e3e08,
         type: 3}
