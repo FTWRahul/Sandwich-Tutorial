@@ -19,15 +19,15 @@ public class IngredientSlice : MonoBehaviour
 
     private void Awake()
     {
-        Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        _mRenderer = GetComponent<MeshRenderer>();
-        _mRenderer.material = material;
+        //Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        //_mRenderer = GetComponent<MeshRenderer>();
+        //_mRenderer.material = material;
     }
 
     public void Init(Node node)
     {
-        _mRenderer.material.SetColor("_BaseColor", ingredientData.tempColor);
-        transform.localScale = new Vector3(1, .25f, 1);
+        //_mRenderer.material.SetColor("_BaseColor", ingredientData.tempColor);
+        //transform.localScale = new Vector3(1, .25f, 1);
         gameObject.name = ingredientData.ingredientName;
         _node = node;
     }

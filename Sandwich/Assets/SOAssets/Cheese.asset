@@ -15,5 +15,4 @@ MonoBehaviour:
   ingredientName: Cheese
   tempColor: {r: 0.8773585, g: 0.86861736, b: 0, a: 0}
   ease: 6
-  model: {fileID: 0}
-  modelHeight: 0.25
+  model: {fileID: 8380233933338219344, guid: 991417ae3cda23b4aa4da50edadf22ff, type: 3}

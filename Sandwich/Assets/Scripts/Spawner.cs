@@ -37,6 +37,8 @@ public class Spawner : MonoBehaviour
     private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
     public static List<ICommand> commands = new List<ICommand>();
     public static bool canUndo;
+    private bool _isRewinding = false;
+
 
     private void Awake()
     {
@@ -92,8 +94,8 @@ public class Spawner : MonoBehaviour
 
     public void PlaceIngredient(Node node ,IngredientSO data , int xPos, int yPos)
     {
-        IngredientSlice slice = GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<IngredientSlice>();
-        slice.gameObject.AddComponent<IngredientFlipper>();
+        IngredientSlice slice = Instantiate(data.model).GetComponent<IngredientSlice>(); // GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<IngredientSlice>();
+        //slice.gameObject.AddComponent<IngredientFlipper>();
         slice.transform.position = new Vector3(xPos, 10, yPos);
         slice.ingredientData = data;
         slice.Init(node);
@@ -122,7 +124,10 @@ public class Spawner : MonoBehaviour
 
     public void Retry()
     {
-        StartCoroutine(UnfoldProper());
+        if (canUndo)
+        {
+            StartCoroutine(UnfoldProper());
+        }
     }
 
     public void Undo()
@@ -137,17 +142,24 @@ public class Spawner : MonoBehaviour
 
     public IEnumerator UnfoldProper()
     {
-        for (int i = commands.Count; i > 0; i--)
+        
+        if (!_isRewinding)
         {
-            //Debug.Log("I = " + (i - 1));
-            commands[i -1 ].Undo(.2f);
-            yield return new WaitForSeconds(.2f);
-            commands.Remove(commands[(i - 1)]);
+            _isRewinding = true;
+            for (int i = commands.Count; i > 0; i--)
+            {
+                //Debug.Log("I = " + (i - 1));
+                commands[i -1 ].Undo(.2f);
+                yield return new WaitForSeconds(.2f);
+                commands.Remove(commands[(i - 1)]);
+            }
+            foreach (var item in itemsOnBoard)
+            {
+                item.GetComponent<IngredientFlipper>().stackCount = 0;
+            }
+            _isRewinding = false;
         }
-        foreach (var item in itemsOnBoard)
-        {
-            item.GetComponent<IngredientFlipper>().stackCount = 0;
-        }
+        
     }
     
 }

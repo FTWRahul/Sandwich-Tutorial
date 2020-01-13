@@ -15,5 +15,4 @@ MonoBehaviour:
   ingredientName: Orange
   tempColor: {r: 1, g: 0.5639591, b: 0, a: 0}
   ease: 6
-  model: {fileID: 0}
-  modelHeight: 0.25
+  model: {fileID: 2869674289645958944, guid: ac28bbf98d188394ea29b27fd56a908c, type: 3}

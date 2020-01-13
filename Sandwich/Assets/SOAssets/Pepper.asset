@@ -15,5 +15,4 @@ MonoBehaviour:
   ingredientName: Pepper
   tempColor: {r: 0.06429883, g: 0.745283, b: 0, a: 0}
   ease: 6
-  model: {fileID: 0}
-  modelHeight: 0.25
+  model: {fileID: 3175051208462909555, guid: 606440fa82fb1ae4b9127b6d19a3ff77, type: 3}
