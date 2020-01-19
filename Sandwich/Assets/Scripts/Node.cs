@@ -10,23 +10,8 @@ public class Node : MonoBehaviour
     
     public List<Vector2Int> GetNeighbours()
     {
-        _returnList.Clear();   
-//        if (pos.y < Spawner.Height - 1)
-//        {
-//            _returnList.Add(pos + Vector2Int.up);
-//        }
-//        if (pos.y != 0)
-//        {
-//            _returnList.Add(pos + Vector2Int.down);
-//        }
-//        if (pos.x != 0)
-//        {
-//            _returnList.Add(pos + Vector2Int.left);
-//        }
-//        if (pos.x < Spawner.Width - 1)
-//        {
-//            _returnList.Add(pos + Vector2Int.right);
-        //}
+        _returnList.Clear();
+        
         if (pos.y < Spawner.Height - 1)
         {
             _returnList.Add(Vector2Int.up);

@@ -10,4 +10,5 @@ public class IngredientSO : ScriptableObject
    //public Color tempColor;
    public DG.Tweening.Ease ease;
    public GameObject model;
+   public bool isBread;
 }

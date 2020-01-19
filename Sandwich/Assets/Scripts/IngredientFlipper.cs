@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Serialization;
@@ -12,11 +13,13 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     [HideInInspector]
     public IngredientSlice nextSlice;
     private Sequence _nudgeSequence;
-    private Sequence _flipSequence;
     private Vector2Int _selectedNeighbour;
-
     [HideInInspector]
     public int stackCount = 0;
+
+    public static bool hasWon;
+    //private static int _internalCounter = 0;
+    public static List<IngredientFlipper> ingredientsOnStack = new List<IngredientFlipper>();
     
     private void Start()
     {
@@ -43,26 +46,23 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     
     public void AttemptFlip(Vector3 dir)
     {
-        //Debug.Log("Swipe Object name = " + gameObject.name);
+        if (hasWon)
+        {
+            FindObjectOfType<LevelEnd>().TakeBite();
+            return;
+        }
         if (transform.parent != null)
         {
-            //Debug.Log("parent object found");
-            //Debug.Log("Parent object name = "+ transform.parent.gameObject.name);
             if (transform.GetComponentInParent<IRespondToTouch>() != null)
             {
-                //Debug.Log("Found component in parent");
                 nextSlice.GetComponent<IRespondToTouch>().AttemptFlip(dir);
-                //transform.GetComponentInParent<IRespondToTouch>().AttemptFlip(dir);
                 return;
             }
-            //Debug.Log("Did not find component in parent");
         }
-        //Debug.Log("parent object not found");
         if (nextSlice != null)
         {
             return;
         }
-        //Debug.Log("TouchResponse from node " + _slice.Node.pos);
         List<Vector2Int> neighbouringNodes = _slice.Node.GetNeighbours();
         
         Vector3 swipeDirection = GetSwipeDirection(dir);
@@ -97,20 +97,86 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         }
         if (nextSlice != null)
         {
-            Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
+            //Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
             var nextStackCount = nextSlice.GetComponent<IngredientFlipper>().stackCount;
-            Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextStackCount);
+            //Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextStackCount);
             //int displacement = stackCount + (nextStackCount + 1);
             ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, stackCount, nextStackCount);
             swipeCommand.Execute();
             Spawner.commands.Add(swipeCommand);
-            Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
-            //StartCoroutine(FlipSlice(flipDirection, _nextSlice, displacement));
-            //nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
+            //Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
+            if (_slice.ingredientData.isBread && nextSlice.ingredientData.isBread)
+            {
+                CheckWin();
+            }
             return;
         }
         StartCoroutine(NudgeSlice(flipDirection));
     }
+
+    void CheckWin()
+    {
+        var count = nextSlice.GetComponent<IngredientFlipper>().stackCount;
+        if (count == Spawner.itemsOnBoard.Count - 1)
+        {
+            Debug.Log("Win");
+            Debug.Log("Stack count is " +count);
+            hasWon = true;
+            StartCoroutine(RotateAll());
+        }
+        else
+        {
+            Debug.Log("Undo and keep Going");
+            Debug.Log("Stack count is " +count);
+        }
+    }
+
+    IEnumerator RotateAll()
+    {
+        yield return new WaitForSeconds(1f);
+        for (int i = 0; i < ingredientsOnStack.Count; i++)
+        {
+            //Debug.Log(ingredientsOnStack[i].name + " : Pos = " + ingredientsOnStack[i].transform.position);
+            ingredientsOnStack[i].transform.parent = null;
+            yield return new WaitForSeconds(.5f);
+        }
+        yield return new WaitForSeconds(2);
+        foreach (var ingredient in Spawner.itemsOnBoard)
+        {
+            Debug.Log(ingredient.transform.localRotation.eulerAngles+ " Rotation for " + ingredient.name);
+            if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.y), 180) &&
+                Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.z), 180))
+            {
+                Debug.Log("DO notin");
+            }
+            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.y), 180))
+            {
+                Debug.Log("Setting Y to 0 for  : " + ingredient.name);
+                ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.localRotation.eulerAngles.x, 0, ingredient.transform.localRotation.eulerAngles.z));
+            }
+            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.z), 180))
+            {
+                Debug.Log("Setting Y to 180 for  : " + ingredient.name);
+                ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.localRotation.eulerAngles.x, 180, ingredient.transform.localRotation.eulerAngles.z));
+            }
+        }
+//        List<IngredientSlice> orderedStack = new List<IngredientSlice>();
+//        var orderedEnumerable = Spawner.itemsOnBoard.OrderBy(t => t.transform.localPosition.y);
+//        orderedStack = orderedEnumerable.ToList();
+//        foreach (var ingredient in orderedStack)
+//        {
+//            Debug.Log(ingredient.name + "   " + ingredient.transform.localPosition.y);
+//            ingredient.transform.localRotation = Quaternion.Euler(Vector3.zero);
+//        }
+//        
+//        for (int i = 0; i < ingredientsOnStack.Count; i++)
+//        {
+//            ingredientsOnStack[i].transform.rotation = Quaternion.Euler(Vector3.zero);
+//            yield return new WaitForSeconds(.5f);
+//            Debug.Log(ingredientsOnStack[i].name + " : After Rotation : Pos = " + ingredientsOnStack[i].transform.position);
+//        }
+    }
+    
     
     private IEnumerator NudgeSlice(Vector3 dir)
     {

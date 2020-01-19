@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TouchManager : MonoBehaviour
 {
@@ -34,13 +35,13 @@ public class TouchManager : MonoBehaviour
             Ray ray = _mainCam.ScreenPointToRay(_receivedTouch.position);
             if (Physics.Raycast(ray, out hit))
             {
-                IRespondToTouch hitRisponder = null;
+                IRespondToTouch hitResponder = null;
                 if (_itemTouched == null)
                 {
                     try
                     {
-                        hitRisponder = hit.transform.GetComponent<IRespondToTouch>();
-                        _itemTouched = hitRisponder;
+                        hitResponder = hit.transform.GetComponent<IRespondToTouch>();
+                        _itemTouched = hitResponder;
                         _startPoint = hit.point;
                     }
                     catch (NullReferenceException e)
