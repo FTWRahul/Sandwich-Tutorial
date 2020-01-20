@@ -120,6 +120,7 @@ public class Spawner : MonoBehaviour
         gridConstructor.CreateGrid();
         patternGeneration.GeneratePattern();
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
+        LevelEnd.biteCount = 1;
     }
 
     public void Retry()

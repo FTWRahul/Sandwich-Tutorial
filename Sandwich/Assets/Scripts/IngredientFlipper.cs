@@ -13,6 +13,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     [HideInInspector]
     public IngredientSlice nextSlice;
     private Sequence _nudgeSequence;
+    private Sequence _endSequence;
     private Vector2Int _selectedNeighbour;
     [HideInInspector]
     public int stackCount = 0;
@@ -24,7 +25,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     private void Start()
     {
         _nudgeSequence = DOTween.Sequence();
-        //_flipSequence = DOTween.Sequence();
+        _endSequence = DOTween.Sequence();
         
         _slice = GetComponent<IngredientSlice>();
         float randomDelay = Random.value;
@@ -120,51 +121,47 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         if (count == Spawner.itemsOnBoard.Count - 1)
         {
             Debug.Log("Win");
-            Debug.Log("Stack count is " +count);
             hasWon = true;
             StartCoroutine(RotateAll());
         }
         else
         {
             Debug.Log("Undo and keep Going");
-            Debug.Log("Stack count is " +count);
         }
     }
 
     IEnumerator RotateAll()
     {
+        _endSequence.Complete();
         yield return new WaitForSeconds(1f);
-        //yield return new WaitForSeconds(1f);
         for (int i = 0; i < Spawner.itemsOnBoard.Count; i++)
         {
             Spawner.itemsOnBoard[i].transform.parent = null;
         }
         foreach (var ingredient in Spawner.itemsOnBoard)
         {
-
             if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180) &&
                 Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
             {
-                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(180, ingredient.transform.localRotation.eulerAngles.y, ingredient.transform.localRotation.eulerAngles.z));
                 ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
                 ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
             else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180))
             {
-                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.rotation.eulerAngles.x, 0, ingredient.transform.rotation.eulerAngles.z));
                 
                 ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
-                //ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
             else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
             {
-                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.rotation.eulerAngles.x, 180, ingredient.transform.rotation.eulerAngles.z));
                 ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
                 ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
+
+            _endSequence.Prepend(ingredient.transform.DOJump(ingredient.transform.position, ingredient.transform.position.y, 1, .5f).SetEase(Ease.OutQuad));
+//            _endSequence.Join(ingredient.transform.DORotate(Vector3.right * 30, .3f).SetEase(Ease.OutQuad));
+//            _endSequence.Append(ingredient.transform.DORotate(Vector3.zero, .2f).SetEase(Ease.OutQuad));
         }
     }
-    
     
     private IEnumerator NudgeSlice(Vector3 dir)
     {

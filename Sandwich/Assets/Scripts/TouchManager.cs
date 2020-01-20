@@ -33,7 +33,7 @@ public class TouchManager : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
-            if (IngredientFlipper.hasWon && timeSinceLastTap > 1f)
+            if (IngredientFlipper.hasWon && timeSinceLastTap > .5f)
             {
                 TakeBite();
                 return;
@@ -87,10 +87,10 @@ public class TouchManager : MonoBehaviour
     [ContextMenu("TakeBite")]
     private void TakeBite()
     {
-        Debug.Log(timeSinceLastTap + " time since last tap was :: Now changing to 0");
+        //Debug.Log(timeSinceLastTap + " time since last tap was :: Now changing to 0");
         timeSinceLastTap = 0;
         _itemTouched = _endResponder;
         _itemTouched.AttemptFlip(Vector3.one);
-        Debug.Log("Pre call from touch responder");
+        //Debug.Log("Pre call from touch responder");
     }
 }
