@@ -27,7 +27,7 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private IngredientSO breadSo;
     [SerializeField]
-    private List<IngredientSO> ingredientsToSpawn;
+    private List<IngredientSO> ingredientsToSpawn = new List<IngredientSO>();
     
     public IPatternGenerator patternGeneration;
     public GridConstructor gridConstructor;
@@ -108,12 +108,12 @@ public class Spawner : MonoBehaviour
     public void ResetGame()
     {
         gridConstructor.DeconstructGrid();
+        IngredientFlipper.hasWon = false;
         foreach (var item in itemsOnBoard)
         {
             Destroy(item.gameObject);
         }
         itemsOnBoard.Clear();
-
         _ingredientStack.Clear();
         PopulateStack();
         RandomizeBoard();

@@ -40,7 +40,6 @@ public class PatternGeneration : MonoBehaviour , IPatternGenerator
         Vector2Int bread2Pos = spawner.Grid[xOffset + possibleBread2Pos[rand].x, zOffset + possibleBread2Pos[rand].y].pos;
 
         bool flip = false;
-        int i = 0;
         for (int j = 0; j < 10; j++)
         {
             if (Spawner.itemsOnBoard.Count > spawner.MaxIngredients - 2)

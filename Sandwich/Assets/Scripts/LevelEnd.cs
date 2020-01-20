@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class LevelEnd : MonoBehaviour , IRespondToTouch
+public class LevelEnd : IRespondToTouch
 {
     public int biteCount = 1;
 
     public int maxBites = 3;
     
-    [ContextMenu("TakeBite")]
     public void TakeBite()
     {
+        Debug.Log(biteCount + "Count should be");
         if (biteCount <= maxBites)
         {
             foreach (var ingredient in Spawner.itemsOnBoard)
@@ -24,11 +24,13 @@ public class LevelEnd : MonoBehaviour , IRespondToTouch
             }
 
             biteCount++;
+            Debug.Log(biteCount + "Count increased");
         }
     }
 
     public void AttemptFlip(Vector3 dir)
     {
         TakeBite();
+        Debug.Log("Called");
     }
 }

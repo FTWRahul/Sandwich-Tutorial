@@ -48,7 +48,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     {
         if (hasWon)
         {
-            FindObjectOfType<LevelEnd>().TakeBite();
+            //FindObjectOfType<LevelEnd>().TakeBite();
             return;
         }
         if (transform.parent != null)
@@ -134,47 +134,35 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     IEnumerator RotateAll()
     {
         yield return new WaitForSeconds(1f);
-        for (int i = 0; i < ingredientsOnStack.Count; i++)
+        //yield return new WaitForSeconds(1f);
+        for (int i = 0; i < Spawner.itemsOnBoard.Count; i++)
         {
-            //Debug.Log(ingredientsOnStack[i].name + " : Pos = " + ingredientsOnStack[i].transform.position);
-            ingredientsOnStack[i].transform.parent = null;
-            yield return new WaitForSeconds(.5f);
+            Spawner.itemsOnBoard[i].transform.parent = null;
         }
-        yield return new WaitForSeconds(2);
         foreach (var ingredient in Spawner.itemsOnBoard)
         {
-            Debug.Log(ingredient.transform.localRotation.eulerAngles+ " Rotation for " + ingredient.name);
-            if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.y), 180) &&
-                Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.z), 180))
+
+            if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180) &&
+                Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
             {
-                Debug.Log("DO notin");
+                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(180, ingredient.transform.localRotation.eulerAngles.y, ingredient.transform.localRotation.eulerAngles.z));
+                ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
+                ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
-            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.y), 180))
+            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180))
             {
-                Debug.Log("Setting Y to 0 for  : " + ingredient.name);
-                ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.localRotation.eulerAngles.x, 0, ingredient.transform.localRotation.eulerAngles.z));
+                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.rotation.eulerAngles.x, 0, ingredient.transform.rotation.eulerAngles.z));
+                
+                ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
+                //ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
-            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.localRotation.eulerAngles.z), 180))
+            else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
             {
-                Debug.Log("Setting Y to 180 for  : " + ingredient.name);
-                ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.localRotation.eulerAngles.x, 180, ingredient.transform.localRotation.eulerAngles.z));
+                //ingredient.transform.rotation = Quaternion.Euler(new Vector3(ingredient.transform.rotation.eulerAngles.x, 180, ingredient.transform.rotation.eulerAngles.z));
+                ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
+                ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
         }
-//        List<IngredientSlice> orderedStack = new List<IngredientSlice>();
-//        var orderedEnumerable = Spawner.itemsOnBoard.OrderBy(t => t.transform.localPosition.y);
-//        orderedStack = orderedEnumerable.ToList();
-//        foreach (var ingredient in orderedStack)
-//        {
-//            Debug.Log(ingredient.name + "   " + ingredient.transform.localPosition.y);
-//            ingredient.transform.localRotation = Quaternion.Euler(Vector3.zero);
-//        }
-//        
-//        for (int i = 0; i < ingredientsOnStack.Count; i++)
-//        {
-//            ingredientsOnStack[i].transform.rotation = Quaternion.Euler(Vector3.zero);
-//            yield return new WaitForSeconds(.5f);
-//            Debug.Log(ingredientsOnStack[i].name + " : After Rotation : Pos = " + ingredientsOnStack[i].transform.position);
-//        }
     }
     
     
@@ -219,22 +207,22 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 
         if (final == right)
         {
-            Debug.Log("Flip Right");
+            //Debug.Log("Flip Right");
             return Vector3.right;
         }
         else if (final == left)
         {
-            Debug.Log("Flip Left");
+            //Debug.Log("Flip Left");
             return Vector3.left;
         }
         else if (final == forward)
         {
-            Debug.Log("Flip Up");
+            //Debug.Log("Flip Up");
             return Vector3.forward;
         }
         else
         {
-            Debug.Log("Flip Down");
+            //Debug.Log("Flip Down");
             return Vector3.back;
         }
     }
