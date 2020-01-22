@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -35,6 +37,7 @@ public class SwipeCommand : ICommand
         int displacement = _stackCount + (_nextStackCount + 1);
         FlipSlice(_flipDirection, _nextSlice, displacement);
         _nextSlice.GetComponent<IngredientFlipper>().stackCount = displacement;
+        PlayAudio();
     }
 
     private async void FlipSlice(Vector3 dir, IngredientSlice next, float yDisplacement)
@@ -88,6 +91,12 @@ public class SwipeCommand : ICommand
     public void Undo(float speed)
     {
         FlipSlice(- _flipDirection, _initialPosition, _stackCount, speed);
+        PlayAudio();
+    }
+
+    void PlayAudio()
+    {
+       AudioManager.instance.PlaySound();
     }
    
 }

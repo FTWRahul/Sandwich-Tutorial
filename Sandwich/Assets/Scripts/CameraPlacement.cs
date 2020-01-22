@@ -10,7 +10,7 @@ public class CameraPlacement : MonoBehaviour
 {
     private Vector3 _originalPos;
     private Quaternion _originalRot;
-    public Transform endPos;
+    //public Transform endPos;
     private bool _lookAt;
 
     private void Awake()
@@ -57,8 +57,8 @@ public class CameraPlacement : MonoBehaviour
         GameObject boundGizmo = new GameObject("Bounds");
         boundGizmo.transform.position = bounds.center;
         Vector3 endPosition = new Vector3(bounds.center.x - 2, 3, bounds.center.z /2);
-        transform.DOMove(endPosition, 2f);
         _lookAt = true;
+        transform.DOMove(endPosition, 2f);
         //transform.DORotate(endPos.rotation.eulerAngles, 1f);
         //yield return new WaitForSeconds(1f);
         //transform.DOLookAt(bounds2.center, .5f);

@@ -168,7 +168,6 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
                 ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
                 ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
-
             _endSequence.Prepend(ingredient.transform.DOJump(ingredient.transform.position, ingredient.transform.position.y, 1, 1f).SetEase(Ease.InOutQuad));
 //            _endSequence.Join(ingredient.transform.DORotate(Vector3.right * 30, .3f).SetEase(Ease.OutQuad));
 //            _endSequence.Append(ingredient.transform.DORotate(Vector3.zero, .2f).SetEase(Ease.OutQuad));
