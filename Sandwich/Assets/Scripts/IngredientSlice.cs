@@ -17,6 +17,9 @@ public class IngredientSlice : MonoBehaviour
     private GameObject _oneBite;
     [SerializeField]
     private GameObject _twoBite;
+
+    public GameObject particles;
+    
     
     public List<GameObject> modelList = new List<GameObject>();
     

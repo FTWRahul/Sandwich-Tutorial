@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -19,6 +20,8 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     public int stackCount = 0;
 
     public static bool hasWon;
+
+    public static UnityEvent winEvent = new UnityEvent();
     //private static int _internalCounter = 0;
     public static List<IngredientFlipper> ingredientsOnStack = new List<IngredientFlipper>();
     
@@ -105,6 +108,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, stackCount, nextStackCount);
             swipeCommand.Execute();
             Spawner.commands.Add(swipeCommand);
+            StartCoroutine(SpawnParticles(nextStackCount + 1));
             //Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
             if (_slice.ingredientData.isBread && nextSlice.ingredientData.isBread)
             {
@@ -115,12 +119,20 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         StartCoroutine(NudgeSlice(flipDirection));
     }
 
+    IEnumerator SpawnParticles(int nextStackCount)
+    {
+        yield return new WaitForSeconds(.4f);
+        Vector3 pos = new Vector3(nextSlice.transform.position.x,((nextStackCount + stackCount) * .25f) ,nextSlice.transform.position.z);
+        Instantiate(_slice.particles, pos, Quaternion.Euler(90, 0, 0));
+    }
+
     void CheckWin()
     {
         var count = nextSlice.GetComponent<IngredientFlipper>().stackCount;
         if (count == Spawner.itemsOnBoard.Count - 1)
         {
             Debug.Log("Win");
+            winEvent.Invoke();
             hasWon = true;
             StartCoroutine(RotateAll());
         }
@@ -133,7 +145,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     IEnumerator RotateAll()
     {
         _endSequence.Complete();
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         for (int i = 0; i < Spawner.itemsOnBoard.Count; i++)
         {
             Spawner.itemsOnBoard[i].transform.parent = null;
@@ -157,7 +169,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
                 ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
 
-            _endSequence.Prepend(ingredient.transform.DOJump(ingredient.transform.position, ingredient.transform.position.y, 1, .5f).SetEase(Ease.OutQuad));
+            _endSequence.Prepend(ingredient.transform.DOJump(ingredient.transform.position, ingredient.transform.position.y, 1, 1f).SetEase(Ease.InOutQuad));
 //            _endSequence.Join(ingredient.transform.DORotate(Vector3.right * 30, .3f).SetEase(Ease.OutQuad));
 //            _endSequence.Append(ingredient.transform.DORotate(Vector3.zero, .2f).SetEase(Ease.OutQuad));
         }

@@ -52,6 +52,8 @@ MonoBehaviour:
   _noBite: {fileID: 4109642160687678813}
   _oneBite: {fileID: 4109642159510291339}
   _twoBite: {fileID: 4109642160515286350}
+  particles: {fileID: 4899102301908442238, guid: a8e60c36bde6ef84aa580147f7921626,
+    type: 3}
   modelList: []
 --- !u!114 &-8233750570197232518
 MonoBehaviour:

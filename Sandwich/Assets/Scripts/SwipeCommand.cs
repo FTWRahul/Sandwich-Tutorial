@@ -47,6 +47,7 @@ public class SwipeCommand : ICommand
         _flipSequence.Prepend(_slice.transform.DOJump(new Vector3(pos.x, (yDisplacement * .25f) + .25f, pos.z), (yDisplacement * .25f), 1, .5f)
             .SetEase(Ease.OutQuad));
         _flipSequence.Join(_slice.transform.DORotate(dir * 180, .5f, RotateMode.WorldAxisAdd));
+        //GameObject.Instantiate(_slice.particles, new Vector3(next.transform.localPosition.x,(_nextStackCount + 1) * .25f,next.transform.localPosition.y), Quaternion.Euler(90, 0 ,0));
         await Task.Delay(600);
         ToggleAfterDelay();
     }

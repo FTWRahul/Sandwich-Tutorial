@@ -125,7 +125,7 @@ public class Spawner : MonoBehaviour
 
     public void Retry()
     {
-        if (canUndo)
+        if (canUndo && !IngredientFlipper.hasWon)
         {
             StartCoroutine(UnfoldProper());
         }
@@ -144,7 +144,7 @@ public class Spawner : MonoBehaviour
     public IEnumerator UnfoldProper()
     {
         
-        if (!_isRewinding)
+        if (!_isRewinding && !IngredientFlipper.hasWon)
         {
             _isRewinding = true;
             for (int i = commands.Count; i > 0; i--)
