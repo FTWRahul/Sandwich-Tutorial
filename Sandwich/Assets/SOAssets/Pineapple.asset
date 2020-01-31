@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Pineapple
   m_EditorClassIdentifier: 
   ingredientName: Pineapple
-  tempColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 0}
   ease: 6
   model: {fileID: 6960701223044830887, guid: 0952a9fc13675984aa3846e9382322f9, type: 3}
+  isBread: 0

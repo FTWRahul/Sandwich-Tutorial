@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Mushroom
   m_EditorClassIdentifier: 
   ingredientName: Mushroom
-  tempColor: {r: 0.8867924, g: 0.31476992, b: 0.09620863, a: 0}
   ease: 6
   model: {fileID: 3696838672288556226, guid: 8b3ac45f8a0ccf34880f7a63b85076b9, type: 3}
+  isBread: 0

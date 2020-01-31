@@ -76,14 +76,14 @@ public class SwipeCommand : ICommand
     private void ToggleAfterDelay()
     {
         _slice.transform.parent = _nextSlice.transform;
-        IngredientFlipper.ingredientsOnStack.Add(_slice.GetComponent<IngredientFlipper>());
+        //IngredientFlipper.ingredientsOnStack.Add(_slice.GetComponent<IngredientFlipper>());
         Spawner.canUndo = true;
     }
 
     private void ResetRotation()
     {
         _slice.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        IngredientFlipper.ingredientsOnStack.Remove(_slice.GetComponent<IngredientFlipper>());
+        //IngredientFlipper.ingredientsOnStack.Remove(_slice.GetComponent<IngredientFlipper>());
         Spawner.canUndo = true;
     }
 
@@ -96,7 +96,7 @@ public class SwipeCommand : ICommand
 
     void PlayAudio()
     {
-       AudioManager.instance.PlaySound();
+       AudioManager.instance.PlaySwipeSound();
     }
    
 }

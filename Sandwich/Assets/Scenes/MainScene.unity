@@ -277,7 +277,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -321,7 +321,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -830,7 +830,7 @@ PrefabInstance:
     - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
         type: 3}
       propertyPath: ingredientsToSpawn.Array.size
-      value: 11
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
         type: 3}
@@ -889,6 +889,36 @@ PrefabInstance:
     - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
         type: 3}
       propertyPath: ingredientsToSpawn.Array.data[10]
+      value: 
+      objectReference: {fileID: 11400000, guid: 455063b91a470ff4288050a4ed1314ca,
+        type: 2}
+    - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
+        type: 3}
+      propertyPath: ingredientsToSpawn.Array.data[11]
+      value: 
+      objectReference: {fileID: 11400000, guid: 33dceb80dd6091544a9b783e230c41df,
+        type: 2}
+    - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
+        type: 3}
+      propertyPath: ingredientsToSpawn.Array.data[12]
+      value: 
+      objectReference: {fileID: 11400000, guid: 4ec9afaa1db9a61408b37991cb9dee86,
+        type: 2}
+    - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
+        type: 3}
+      propertyPath: ingredientsToSpawn.Array.data[13]
+      value: 
+      objectReference: {fileID: 11400000, guid: b04d141ba17c96e40b9830e5df5ed32b,
+        type: 2}
+    - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
+        type: 3}
+      propertyPath: ingredientsToSpawn.Array.data[14]
+      value: 
+      objectReference: {fileID: 11400000, guid: a81188284a09459458d6e3ef1d421951,
+        type: 2}
+    - target: {fileID: 1146967552807902818, guid: 5911c45bcdd3ef24090c6de3fcaf38ff,
+        type: 3}
+      propertyPath: ingredientsToSpawn.Array.data[15]
       value: 
       objectReference: {fileID: 11400000, guid: 455063b91a470ff4288050a4ed1314ca,
         type: 2}

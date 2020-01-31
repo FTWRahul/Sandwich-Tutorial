@@ -22,7 +22,7 @@ public class LevelEnd : IRespondToTouch
                     ingredient.modelList[biteCount].SetActive(true);
                 }
             }
-
+            AudioManager.instance.PlayBiteSound();
             biteCount++;
             //Debug.Log(biteCount + "Count increased");
         }

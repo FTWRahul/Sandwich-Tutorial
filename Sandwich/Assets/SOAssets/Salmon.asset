@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Salmon
   m_EditorClassIdentifier: 
   ingredientName: Salmon
-  tempColor: {r: 0, g: 0, b: 0, a: 0}
   ease: 6
   model: {fileID: 6825541362864578912, guid: 49d881afbd6745d4e826b146c2d34aeb, type: 3}
+  isBread: 0

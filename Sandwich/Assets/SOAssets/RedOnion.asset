@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: RedOnion
   m_EditorClassIdentifier: 
   ingredientName: RedOnion
-  tempColor: {r: 0, g: 0, b: 0, a: 0}
   ease: 6
   model: {fileID: 783239809215884335, guid: 4cd88f41cc84fbb4db5f321b12673f9c, type: 3}
+  isBread: 0

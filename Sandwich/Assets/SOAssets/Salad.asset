@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Salad
   m_EditorClassIdentifier: 
   ingredientName: Salad
-  tempColor: {r: 0.5270676, g: 0.9245283, b: 0, a: 0}
   ease: 6
   model: {fileID: 5343957272751874559, guid: c7db4d9b8085f944db9e73e3c1b780c7, type: 3}
+  isBread: 0

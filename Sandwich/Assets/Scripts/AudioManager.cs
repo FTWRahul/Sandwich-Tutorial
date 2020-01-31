@@ -10,7 +10,9 @@ public class AudioManager : MonoBehaviour
    public AudioSource source;
    public static AudioManager instance;
 
-   private Object[] clips;
+   private Object[] _swipeClips;
+   private Object[] _biteClips;
+   private AudioClip _winSound;
    
    private void Awake()
    {
@@ -22,13 +24,31 @@ public class AudioManager : MonoBehaviour
       {
          Destroy(this);
       }
-      clips = Resources.LoadAll("Sounds", typeof(AudioClip));
+      _swipeClips = Resources.LoadAll("Sounds/Swipe", typeof(AudioClip));
+      _biteClips = Resources.LoadAll("Sounds/Bite", typeof(AudioClip));
+      _winSound = (AudioClip)Resources.Load("Sounds/SFX/Win");
    }
 
-   public void PlaySound()
+   public void PlaySwipeSound()
    {
-      AudioClip audioClip = (AudioClip) clips[Random.Range(0, clips.Length)];
+      AudioClip audioClip = (AudioClip) _swipeClips[Random.Range(0, _swipeClips.Length)];
+      PlayAudio(audioClip);
+   }
+   public void PlayBiteSound()
+   {
+      AudioClip audioClip = (AudioClip) _biteClips[Random.Range(0, _biteClips.Length)];
+      PlayAudio(audioClip);
+   }
+   
+   private void PlayAudio(AudioClip audioClip)
+   {
       source.clip = audioClip;
+      source.Play();
+   }
+   
+   public void PlayWinSound()
+   {
+      source.clip = _winSound;
       source.Play();
    }
 }

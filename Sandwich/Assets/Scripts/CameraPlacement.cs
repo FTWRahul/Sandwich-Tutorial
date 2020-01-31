@@ -53,9 +53,9 @@ public class CameraPlacement : MonoBehaviour
         {
             bounds.Encapsulate(Spawner.itemsOnBoard[i].transform.position);
         }
-        Debug.Log(bounds.center);
-        GameObject boundGizmo = new GameObject("Bounds");
-        boundGizmo.transform.position = bounds.center;
+        //Debug.Log(bounds.center);
+        //GameObject boundGizmo = new GameObject("Bounds");
+        //boundGizmo.transform.position = bounds.center;
         Vector3 endPosition = new Vector3(bounds.center.x - 2, 3, bounds.center.z /2);
         _lookAt = true;
         transform.DOMove(endPosition, 2f);

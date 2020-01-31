@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Pickles
   m_EditorClassIdentifier: 
   ingredientName: Pickles
-  tempColor: {r: 0.6226415, g: 0.17852955, b: 0, a: 0}
   ease: 6
   model: {fileID: 7379168698023840766, guid: ddcab898c6a1aa9438a445b7f2193a95, type: 3}
+  isBread: 0

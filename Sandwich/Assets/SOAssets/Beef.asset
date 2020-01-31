@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Beef
   m_EditorClassIdentifier: 
   ingredientName: Beef
-  tempColor: {r: 0.7918755, g: 0.9245283, b: 0.6497864, a: 0}
   ease: 6
   model: {fileID: 2228570030686574707, guid: c99ccb83f661f3e419299499bf6e4b5f, type: 3}
+  isBread: 0

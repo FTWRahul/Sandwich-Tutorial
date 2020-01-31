@@ -23,7 +23,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 
     public static UnityEvent winEvent = new UnityEvent();
     //private static int _internalCounter = 0;
-    public static List<IngredientFlipper> ingredientsOnStack = new List<IngredientFlipper>();
+    //public static List<IngredientFlipper> ingredientsOnStack = new List<IngredientFlipper>();
     
     private void Start()
     {
@@ -121,7 +121,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 
     IEnumerator SpawnParticles(int nextStackCount)
     {
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(.3f);
         Vector3 pos = new Vector3(nextSlice.transform.position.x,((nextStackCount + stackCount) * .25f) ,nextSlice.transform.position.z);
         Instantiate(_slice.particles, pos, Quaternion.Euler(90, 0, 0));
     }
@@ -134,6 +134,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             Debug.Log("Win");
             winEvent.Invoke();
             hasWon = true;
+            AudioManager.instance.PlayWinSound();
             StartCoroutine(RotateAll());
         }
         else
@@ -189,18 +190,15 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         {
             return Vector3.back;
         }
-        else if (dir == Vector3.left)
+        if (dir == Vector3.left)
         {
             return Vector3.forward;
         }
-        else if (dir == Vector3.forward)
+        if (dir == Vector3.forward)
         {
             return Vector3.right;
         }
-        else
-        {
-            return Vector3.left;
-        }
+        return Vector3.left;
     }
     private Vector3 GetSwipeDirection(Vector3 dir)
     {
@@ -241,10 +239,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         {
             return a;
         }
-        else
-        {
-            return b;
-        }
+        return b;
     }
 }
 

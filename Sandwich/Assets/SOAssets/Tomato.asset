@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tomato
   m_EditorClassIdentifier: 
   ingredientName: Tomato
-  tempColor: {r: 1, g: 0.14725631, b: 0, a: 0}
   ease: 6
   model: {fileID: 5530258861064358896, guid: 7f5b396d96b95c5479914a18295d2a57, type: 3}
+  isBread: 0
