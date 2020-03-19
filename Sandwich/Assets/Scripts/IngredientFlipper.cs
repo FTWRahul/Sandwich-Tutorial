@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using UnityEngine.Analytics;
 
 public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 {
@@ -136,6 +137,8 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             hasWon = true;
             AudioManager.instance.PlayWinSound();
             StartCoroutine(RotateAll());
+            Analytics.CustomEvent("Sandwich Eaten");
+
         }
         else
         {

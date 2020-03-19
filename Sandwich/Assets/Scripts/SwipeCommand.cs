@@ -98,5 +98,9 @@ public class SwipeCommand : ICommand
     {
        AudioManager.instance.PlaySwipeSound();
     }
-   
+
+    public string FlipperName()
+    {
+        return _slice.name;
+    }
 }

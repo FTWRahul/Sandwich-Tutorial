@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
+using UnityEngine.Analytics;
 
 public class Spawner : MonoBehaviour
 {
     public Node[,] Grid => gridConstructor._grid;
-
+    
     //Getter Properties
     public static int Width => GridConstructor._width;
     public static int Height => GridConstructor._height;
@@ -42,6 +43,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
+
         patternGeneration = GetComponent<IPatternGenerator>();
         _ingredientStack = new Stack<IngredientSO>();
         gridConstructor = GetComponent<GridConstructor>();
@@ -121,6 +123,8 @@ public class Spawner : MonoBehaviour
         patternGeneration.GeneratePattern();
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
         LevelEnd.biteCount = 1;
+        Analytics.CustomEvent("Went To Next Level");
+
     }
 
     public void Retry()
@@ -128,6 +132,7 @@ public class Spawner : MonoBehaviour
         if (canUndo && !IngredientFlipper.hasWon)
         {
             StartCoroutine(UnfoldProper());
+            Analytics.CustomEvent("Level Retry");
         }
     }
 
@@ -136,6 +141,9 @@ public class Spawner : MonoBehaviour
         if (commands.Count > 0 && canUndo)
         {
             int i = commands.Count - 1;
+            Dictionary<string, object> data =  new Dictionary<string, object>();
+            data.Add("Undid Move", commands[i].FlipperName());
+            Analytics.CustomEvent("Move Undo", data);
             commands[i].Undo(.5f);
             commands.Remove(commands[i]);
         }
