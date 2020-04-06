@@ -158,7 +158,7 @@ public class Spawner : MonoBehaviour
             for (int i = commands.Count; i > 0; i--)
             {
                 //Debug.Log("I = " + (i - 1));
-                commands[i -1 ].Undo(.2f);
+                commands[i -1].Undo(.2f);
                 yield return new WaitForSeconds(.2f);
                 commands.Remove(commands[(i - 1)]);
             }
@@ -169,6 +169,13 @@ public class Spawner : MonoBehaviour
             _isRewinding = false;
         }
         
+    }
+
+
+
+    public void AddIngredientToList(IngredientSO ingredient)
+    {
+        ingredientsToSpawn.Add(ingredient);
     }
     
 }

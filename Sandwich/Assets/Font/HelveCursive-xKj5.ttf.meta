@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 2fb21c78a2091d141ba8dd85c95bc630
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Helve Cursive
+  fontNames:
+  - Helve Cursive
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: ca88042e84a68be46b704ac878c8ac6d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
