@@ -1811,6 +1811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff778e354af2db64a814e7fe31b8199e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testMode: 0
 --- !u!1 &1973877892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2445,7 +2446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36a5f511b0d8142cba0aeb92d0b264c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productId: Meat
+  productId: buymeat
   buttonType: 0
   consumePurchase: 1
   onPurchaseComplete:
