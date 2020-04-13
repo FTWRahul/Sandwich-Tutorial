@@ -8,14 +8,12 @@ using UnityEngine.Analytics;
 
 public class Spawner : MonoBehaviour
 {
-    public Node[,] Grid => gridConstructor._grid;
+    public Node[,] Grid => gridConstructor.grid;
     
     //Getter Properties
-    public static int Width => GridConstructor._width;
-    public static int Height => GridConstructor._height;
-    
-    public int MaxIngredients => gridConstructor._maxIngredients;
-
+    public static int Width => GridConstructor.Width;
+    public static int Height => GridConstructor.Height;
+    public int MaxIngredients => gridConstructor.maxIngredients;
     public IngredientSO BreadSo => breadSo;
 
     //Exposed variables in inspector
@@ -34,16 +32,19 @@ public class Spawner : MonoBehaviour
     public GridConstructor gridConstructor;
     public Stack<IngredientSO> _ingredientStack;
     
+    //Static objects for ease of access
     public static List<IngredientSlice> itemsOnBoard = new List<IngredientSlice>();
-    private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
     public static List<ICommand> commands = new List<ICommand>();
     public static bool canUndo;
+    
+    //Etc
+    private List<IngredientSO> _tempingredientsList = new List<IngredientSO>();
     private bool _isRewinding = false;
-
+    
 
     private void Awake()
     {
-
+        //Initialization 
         patternGeneration = GetComponent<IPatternGenerator>();
         _ingredientStack = new Stack<IngredientSO>();
         gridConstructor = GetComponent<GridConstructor>();
@@ -61,13 +62,19 @@ public class Spawner : MonoBehaviour
         patternGeneration.GeneratePattern();
     }
 
+    /// <summary>
+    /// Randomize the height and width of the game board.
+    /// </summary>
     private void RandomizeBoard()
     {
-        GridConstructor._height = Random.Range(heightMinMax.x, heightMinMax.y);
-        GridConstructor._width = Random.Range(widthMinMax.x, widthMinMax.y);
-        gridConstructor._maxIngredients = Random.Range(ingredientMinMax.x, ingredientMinMax.y);
+        GridConstructor.Height = Random.Range(heightMinMax.x, heightMinMax.y);
+        GridConstructor.Width = Random.Range(widthMinMax.x, widthMinMax.y);
+        gridConstructor.maxIngredients = Random.Range(ingredientMinMax.x, ingredientMinMax.y);
     }
 
+    /// <summary>
+    /// Creates a stack of ingredients based on the list provided from the inspector
+    /// </summary>
     private void PopulateStack()
     {
         _tempingredientsList.Clear();
@@ -91,7 +98,7 @@ public class Spawner : MonoBehaviour
         transform1.position = new Vector3(x,0,y);
         go.pos.x = x;
         go.pos.y = y;
-        gridConstructor._grid[x, y] = go;
+        gridConstructor.grid[x, y] = go;
     }
 
     public void PlaceIngredient(Node node ,IngredientSO data , int xPos, int yPos)
@@ -170,9 +177,7 @@ public class Spawner : MonoBehaviour
         }
         
     }
-
-
-
+    
     public void AddIngredientToList(IngredientSO ingredient)
     {
         ingredientsToSpawn.Add(ingredient);

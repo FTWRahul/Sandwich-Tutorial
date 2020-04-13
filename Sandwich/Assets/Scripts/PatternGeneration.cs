@@ -22,11 +22,14 @@ public class PatternGeneration : MonoBehaviour , IPatternGenerator
 
     private void Start()
     {
+        //initialization
         List<Vector2Int> centerPoint = spawner.Grid[Spawner.Width / 2, Spawner.Height / 2].GetNeighbours();
         _wRand.ResetValues(centerPoint, centerPoint.Count * 10);
     }
-    
-    [ContextMenu("GeneratePattern")]
+
+    /// <summary>
+    /// Creates a new pattern of ingredients on the game board
+    /// </summary>
     public void GeneratePattern()
     {
         int xOffset = Spawner.Width/2 + Random.Range(-1, 1);
@@ -91,6 +94,7 @@ public class PatternGeneration : MonoBehaviour , IPatternGenerator
             }
             this._unOccupiedNodes.Remove(rand);
         }
+        //Exit condition for recursive loop
         if (this._pickedNode.x < 0 || this._pickedNode.y < 0 || _depth >= spawner.MaxIngredients /2 || spawner._ingredientStack.Count < 1)
         {
             return true;

@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Takes T as a struct to create a class that returns weighted random values.
+/// When a Type is returned it decreases its probability of being rolled again. 
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class WeightedRandom<T> where T : struct
 {
     private readonly Dictionary<T, float> _weights;

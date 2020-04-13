@@ -87,10 +87,8 @@ public class TouchManager : MonoBehaviour
     [ContextMenu("TakeBite")]
     private void TakeBite()
     {
-        //Debug.Log(timeSinceLastTap + " time since last tap was :: Now changing to 0");
         timeSinceLastTap = 0;
         _itemTouched = _endResponder;
         _itemTouched.AttemptFlip(Vector3.one);
-        //Debug.Log("Pre call from touch responder");
     }
 }

@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GridConstructor : MonoBehaviour
 {
-    public static int _height;
-    public static int _width;
-    public int _maxIngredients;
-    public Node[,] _grid;
+    public static int Height;
+    public static int Width;
+    public int maxIngredients;
+    public Node[,] grid;
     public Spawner spawner;
 
     private void Awake()
@@ -13,29 +14,39 @@ public class GridConstructor : MonoBehaviour
         spawner = GetComponent<Spawner>();
     }
 
+    /// <summary>
+    /// Sets a new node at the x and y position
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void InitilizeGrid(int x, int y)
     {
-        _grid = new Node[x,y];
+        grid = new Node[x,y];
     }
     
+    /// <summary>
+    /// Destroys the objects in the grid
+    /// </summary>
     public void DeconstructGrid()
     {
-        for (int y = 0; y < _height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < Width; x++)
             {
-                Destroy(this._grid[x, y].gameObject);
-                this._grid[x, y] = null;
+                Destroy(this.grid[x, y].gameObject);
+                this.grid[x, y] = null;
             }
         }
     }
 
-    [ContextMenu("CreateGrid")]
+    /// <summary>
+    /// Creates nodes at given x and y
+    /// </summary>
     public void CreateGrid()
     {
-        for (int y = 0; y < _height; y++)
+        for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < _width; x++)
+            for (int x = 0; x < Width; x++)
             {
                 spawner.CreateNode(x, y);
             }
@@ -44,6 +55,6 @@ public class GridConstructor : MonoBehaviour
 
     public void ToggleNode(int x, int y)
     {
-        _grid[x, y].hasIngredient = true;
+        grid[x, y].hasIngredient = true;
     }
 }
