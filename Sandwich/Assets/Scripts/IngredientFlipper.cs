@@ -9,6 +9,9 @@ using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 using UnityEngine.Analytics;
 
+/// <summary>
+/// Touch responder mono class for ingredient slices.
+/// </summary>
 public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 {
     private IngredientSlice _slice;
@@ -23,11 +26,11 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
     public static bool hasWon;
 
     public static UnityEvent winEvent = new UnityEvent();
-    //private static int _internalCounter = 0;
-    //public static List<IngredientFlipper> ingredientsOnStack = new List<IngredientFlipper>();
+    
     
     private void Start()
     {
+        //Reference assignment
         _nudgeSequence = DOTween.Sequence();
         _endSequence = DOTween.Sequence();
         
@@ -36,6 +39,9 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         Invoke(nameof(DelayedDrop), randomDelay);
     }
     
+    /// <summary>
+    /// Initial delayed drop of ingredients on board.
+    /// </summary>
     private void DelayedDrop()
     {
         try
@@ -48,22 +54,28 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             throw;
         }
     }
-    
+    /// <summary>
+    /// Interface implementation for calculating the direction of flip and performing additional logic on it
+    /// </summary>
+    /// <param name="dir"></param>
     public void AttemptFlip(Vector3 dir)
     {
+        //When level is over don't perform any logic.
         if (hasWon)
         {
-            //FindObjectOfType<LevelEnd>().TakeBite();
             return;
         }
+        //If this object is already in another stack then call the flip from that object instead of this.
         if (transform.parent != null)
         {
             if (transform.GetComponentInParent<IRespondToTouch>() != null)
             {
+                //Recursive function for getting the deepest touch responder of any given ingredient
                 nextSlice.GetComponent<IRespondToTouch>().AttemptFlip(dir);
                 return;
             }
         }
+        //additional saftey check
         if (nextSlice != null)
         {
             return;
@@ -74,6 +86,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         Vector2Int internalDir = new Vector2Int(Mathf.RoundToInt(swipeDirection.x), Mathf.RoundToInt(swipeDirection.z));
 
         bool exists = false;
+        //Checking to see if what neighbours exist around this slice
         for (int i = 0; i < neighbouringNodes.Count; i++)
         {
             if (internalDir == neighbouringNodes[i])
@@ -88,6 +101,7 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 
         if (exists)
         {
+            // Sets next slice to be the one from the confirmed neighbour list.
             for (int i = 0; i < Spawner.itemsOnBoard.Count; i++)
             {
                 if (Spawner.itemsOnBoard[i].Node != null)
@@ -102,24 +116,29 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         }
         if (nextSlice != null)
         {
-            //Debug.Log("Current Stack count for object = " + gameObject.name + "  " + stackCount);
+            //Creates a new command for swiping the ingredients onto another.
+            //Command is added to the list of commands for Undo potential.
             var nextStackCount = nextSlice.GetComponent<IngredientFlipper>().stackCount;
-            //Debug.Log("Next Stack count for object = " + nextSlice.gameObject.name + "  " + nextStackCount);
-            //int displacement = stackCount + (nextStackCount + 1);
             ICommand swipeCommand = new SwipeCommand(this, _slice, nextSlice, transform.position, transform.rotation, flipDirection, _slice.Node, stackCount, nextStackCount);
             swipeCommand.Execute();
             Spawner.commands.Add(swipeCommand);
             StartCoroutine(SpawnParticles(nextStackCount + 1));
-            //Debug.Log("Spawwner confirmation " + Spawner.commands.Count);
+            //After each successful flip checks for wining condition based on this logic
             if (_slice.ingredientData.isBread && nextSlice.ingredientData.isBread)
             {
                 CheckWin();
             }
             return;
         }
+        //If move is not possible calls the animation.
         StartCoroutine(NudgeSlice(flipDirection));
     }
 
+    /// <summary>
+    /// Spawns particles at the center of the stack.
+    /// </summary>
+    /// <param name="nextStackCount"></param>
+    /// <returns></returns>
     IEnumerator SpawnParticles(int nextStackCount)
     {
         yield return new WaitForSeconds(.3f);
@@ -127,6 +146,9 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         Instantiate(_slice.particles, pos, Quaternion.Euler(90, 0, 0));
     }
 
+    /// <summary>
+    /// Checks to see if all the ingredients are incorporated between the two pieces of bread
+    /// </summary>
     void CheckWin()
     {
         var count = nextSlice.GetComponent<IngredientFlipper>().stackCount;
@@ -142,20 +164,30 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         }
         else
         {
+            //TODO: Make the Undo Button unusable and play animation on retry button.
+            //maybe even add a rewarded add for a retry.
             Debug.Log("Undo and keep Going");
         }
     }
 
+    /// <summary>
+    /// When the sandwich is made, all ingredients need to be flipped in a certain orientation to return them to their original rotation.
+    /// This is a hard process as many ingredients are flipped over several times through out the run.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator RotateAll()
     {
         _endSequence.Complete();
         yield return new WaitForSeconds(.5f);
+        //Set all transform parents to null
         for (int i = 0; i < Spawner.itemsOnBoard.Count; i++)
         {
             Spawner.itemsOnBoard[i].transform.parent = null;
         }
         foreach (var ingredient in Spawner.itemsOnBoard)
         {
+            //conditions for how to rotate each piece based on their current rotation
+            //Also adjusts the height of the unparented object
             if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180) &&
                 Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
             {
@@ -164,7 +196,6 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             }
             else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.y), 180))
             {
-                
                 ingredient.transform.rotation = Quaternion.Euler(Vector3.zero);
             }
             else if (Mathf.Approximately(Mathf.Abs(ingredient.transform.rotation.eulerAngles.z), 180))
@@ -173,11 +204,14 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
                 ingredient.transform.position += new Vector3(0, -.25f, 0);
             }
             _endSequence.Prepend(ingredient.transform.DOJump(ingredient.transform.position, ingredient.transform.position.y, 1, 1f).SetEase(Ease.InOutQuad));
-//            _endSequence.Join(ingredient.transform.DORotate(Vector3.right * 30, .3f).SetEase(Ease.OutQuad));
-//            _endSequence.Append(ingredient.transform.DORotate(Vector3.zero, .2f).SetEase(Ease.OutQuad));
         }
     }
     
+    /// <summary>
+    /// Animation for when move is impossible
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     private IEnumerator NudgeSlice(Vector3 dir)
     {
         _nudgeSequence.Complete();
@@ -187,6 +221,11 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
             .SetEase(Ease.OutElastic));
     }
     
+    /// <summary>
+    /// Returns Vector of the direction based on ingame conversions.
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     private Vector3 FlipDirection(Vector3 dir)
     {
         if (dir == Vector3.right)
@@ -203,6 +242,12 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
         }
         return Vector3.left;
     }
+    
+    /// <summary>
+    /// Compares vectors to determine which cardinal direction the swipe was performed in
+    /// </summary>
+    /// <param name="dir"></param>
+    /// <returns></returns>
     private Vector3 GetSwipeDirection(Vector3 dir)
     {
         float right = Vector3.Angle(dir, Vector3.right);
@@ -216,26 +261,29 @@ public class IngredientFlipper : MonoBehaviour , IRespondToTouch
 
         if (final == right)
         {
-            //Debug.Log("Flip Right");
             return Vector3.right;
         }
         else if (final == left)
         {
-            //Debug.Log("Flip Left");
             return Vector3.left;
         }
         else if (final == forward)
         {
-            //Debug.Log("Flip Up");
             return Vector3.forward;
         }
         else
         {
-            //Debug.Log("Flip Down");
             return Vector3.back;
         }
     }
 
+    /// <summary>
+    /// Returns the smaller of the two flotes
+    /// TODO: Move to extension method class for floats, maybe all numeric structs
+    /// </summary>
+    /// <param name="a"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     float GetSmaller(float a, float b)
     {
         if (a < b)

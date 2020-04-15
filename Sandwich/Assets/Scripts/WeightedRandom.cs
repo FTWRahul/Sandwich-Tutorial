@@ -69,25 +69,18 @@ public class WeightedRandom<T> where T : struct
         int random = Random.Range(0, currentList.Count);
         T rolledValue = currentList[random];
         T returnType = rolledValue;
-        //Debug.Log("Rolled " + rolledValue);
         if (_weights[rolledValue] < _reRollThreshold)
         {
-            //Debug.Log("Rerolled " + rolledValue);
             AdjustWeights(returnType, _strength/2);
-            //Debug.Log("Increasing Weight to be  "+ _weights[returnType]);
             return GetRandom(currentList);
         }
-        //Debug.Log("Did not reroll " + rolledValue);
 
         AdjustWeights(returnType, -_strength);
-        //Debug.Log("Decreasing Weight to be  "+ _weights[returnType]);
-        //Debug.Log("Returning  "+ returnType);
         return returnType;
     }
 
     public void ResetWeights()
     {
-        //Debug.Log("Weights Reset");
         for (int i = 0; i < _values.Count; i++)
         {
             _weights[_values[i]] = 100f;

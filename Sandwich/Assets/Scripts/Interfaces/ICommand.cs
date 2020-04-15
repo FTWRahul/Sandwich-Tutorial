@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
+/// <summary>
+/// Interface can be implemented by any class that wants to be loaded into the command buffer.
+/// </summary>
 public interface ICommand
 {
    void Execute();

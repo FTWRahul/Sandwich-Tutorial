@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Node is a grid point that holds its position
+/// </summary>
 public class Node : MonoBehaviour
 {
     public bool hasIngredient;
     public Vector2Int pos;
     private List<Vector2Int> _returnList = new List<Vector2Int>();
     
+    /// <summary>
+    /// Returns the neighbours that exist
+    /// </summary>
+    /// <returns></returns>
     public List<Vector2Int> GetNeighbours()
     {
         _returnList.Clear();

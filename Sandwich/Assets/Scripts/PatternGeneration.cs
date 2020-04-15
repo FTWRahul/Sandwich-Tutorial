@@ -70,23 +70,33 @@ public class PatternGeneration : MonoBehaviour , IPatternGenerator
         Camera.main.GetComponent<CameraPlacement>().PlaceCamera();
     }
     
+    /// <summary>
+    /// Recursive function for generating branching patterns.
+    /// </summary>
+    /// <param name="node"></param>
+    /// <returns></returns>
     public bool UnfoldIngredients(Node node)
     {
+        //Clear refrences
         this._unOccupiedNodes.Clear();
         this._unOccupiedNodes = node.GetNeighbours();
         this._pickedNode = _nullNode;
         Vector2Int rand;
+        //Get the next unoccupied node
         for (int i = 0; i < this._unOccupiedNodes.Count; i++)
         {    
             if (this._unOccupiedNodes.Count == 1)
             {
+                //randomness to prevent straight lines
                 float coinToss = Random.value;
                 if (coinToss < .7f)
                 {
                     return true;
                 }
             }
+            //get weighted random value for direction
             rand = _wRand.GetRandom(_unOccupiedNodes);
+            //add offset to the picked node based on current node position
             if (!spawner.Grid[node.pos.x + rand.x,node.pos.y + rand.y].hasIngredient)
             {
                 this._pickedNode = node.pos + rand;
@@ -100,6 +110,7 @@ public class PatternGeneration : MonoBehaviour , IPatternGenerator
             return true;
         }
         _depth++;
+        //Add ingredients to board
         spawner.PlaceIngredient(spawner.Grid[_pickedNode.x, _pickedNode.y] , spawner._ingredientStack.Pop(), _pickedNode.x, _pickedNode.y);
         return spawner.patternGeneration.UnfoldIngredients(spawner.Grid[_pickedNode.x, _pickedNode.y]);
     }

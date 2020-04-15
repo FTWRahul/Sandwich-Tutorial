@@ -19,6 +19,7 @@ public class SwipeCommand : ICommand
     private int _stackCount = 0;
     private int _nextStackCount = 0;
 
+    //Public constructor for creating a command.
     public SwipeCommand(IngredientFlipper ingredientFlipper , IngredientSlice slice, IngredientSlice nextSlice, Vector3 initialPosition,Quaternion initialRotation, Vector3 flipDirection, Node node, int stackCount , int nextStackCount)
     {
         _slice = slice;
@@ -32,6 +33,7 @@ public class SwipeCommand : ICommand
         _ingredientFlipper = ingredientFlipper;
     }
 
+    //Interface implementation
     public void Execute()
     {
         int displacement = _stackCount + (_nextStackCount + 1);
@@ -40,6 +42,7 @@ public class SwipeCommand : ICommand
         PlayAudio();
     }
 
+    //Flip animation
     private async void FlipSlice(Vector3 dir, IngredientSlice next, float yDisplacement)
     {
         Spawner.canUndo = false;
@@ -55,6 +58,7 @@ public class SwipeCommand : ICommand
         ToggleAfterDelay();
     }
    
+    //Undo animation
     private async void FlipSlice(Vector3 dir, Vector3 next, float yDisplacement, float speed)
     {
         Spawner.canUndo = false;
@@ -73,21 +77,20 @@ public class SwipeCommand : ICommand
         ResetRotation();
     }
 
+    //Async delayed function callback
     private void ToggleAfterDelay()
     {
         _slice.transform.parent = _nextSlice.transform;
-        //IngredientFlipper.ingredientsOnStack.Add(_slice.GetComponent<IngredientFlipper>());
         Spawner.canUndo = true;
     }
 
+    //Async delayed function callback
     private void ResetRotation()
     {
         _slice.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        //IngredientFlipper.ingredientsOnStack.Remove(_slice.GetComponent<IngredientFlipper>());
         Spawner.canUndo = true;
     }
-
-
+    //Undo interface implementation 
     public void Undo(float speed)
     {
         FlipSlice(- _flipDirection, _initialPosition, _stackCount, speed);

@@ -33,6 +33,7 @@ public class TouchManager : MonoBehaviour
 
         if (Input.touchCount > 0)
         {
+            //Checking if level is over
             if (IngredientFlipper.hasWon && timeSinceLastTap > .5f)
             {
                 TakeBite();
@@ -40,6 +41,7 @@ public class TouchManager : MonoBehaviour
             }
             else if (!IngredientFlipper.hasWon)
             {
+                //assign hit responder
                 RaycastHit hit;
                 _receivedTouch = Input.GetTouch(0);
                 Ray ray = _mainCam.ScreenPointToRay(_receivedTouch.position);
@@ -48,6 +50,7 @@ public class TouchManager : MonoBehaviour
                     IRespondToTouch hitResponder = null;
                     if (_itemTouched == null)
                     {
+                        //Error handling hit response
                         try
                         {
                             hitResponder = hit.transform.GetComponent<IRespondToTouch>();
@@ -61,6 +64,7 @@ public class TouchManager : MonoBehaviour
                     }
                     else if (_itemTouched != null)
                     {
+                        //when touch ends calls the interface method on the responder.
                         if (_receivedTouch.phase == TouchPhase.Ended || _receivedTouch.phase == TouchPhase.Canceled)
                         {
                             _endPoint = hit.point;
@@ -77,6 +81,7 @@ public class TouchManager : MonoBehaviour
             }
         }
 
+        //setting responder to null
         if (Input.touchCount < 0)
         {
             _itemTouched = null;
@@ -84,6 +89,9 @@ public class TouchManager : MonoBehaviour
         timeSinceLastTap += Time.deltaTime;
     }
 
+    /// <summary>
+    /// Swaps hit responder
+    /// </summary>
     [ContextMenu("TakeBite")]
     private void TakeBite()
     {

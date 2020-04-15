@@ -53,6 +53,11 @@ public class GridConstructor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets given node to true
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void ToggleNode(int x, int y)
     {
         grid[x, y].hasIngredient = true;

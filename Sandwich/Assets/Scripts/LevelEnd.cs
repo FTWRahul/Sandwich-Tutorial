@@ -7,9 +7,11 @@ public class LevelEnd : IRespondToTouch
 
     public int maxBites = 3;
     
+    /// <summary>
+    /// Non mono hit responder for pure logic of bite.
+    /// </summary>
     public void TakeBite()
     {
-        //Debug.Log(biteCount + "Count should be");
         if (biteCount <= maxBites)
         {
             foreach (var ingredient in Spawner.itemsOnBoard)
@@ -26,19 +28,19 @@ public class LevelEnd : IRespondToTouch
             {
                 NewLevel();
             }
-            //Debug.Log(biteCount + "Count increased");
         }
     }
 
+    //calls the new level
     public async void NewLevel()
     {
         await Task.Delay(500);
         Object.FindObjectOfType<Spawner>().ResetGame();
     }
 
+    //Interface implementation 
     public void AttemptFlip(Vector3 dir)
     {
         TakeBite();
-        //Debug.Log("Called");
     }
 }

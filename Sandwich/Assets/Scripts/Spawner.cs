@@ -90,6 +90,11 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Creates a mew node at position
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void CreateNode(int x, int y)
     {
         Node go = new GameObject("X : " + x + " Y : " + y).AddComponent<Node>();
@@ -101,6 +106,13 @@ public class Spawner : MonoBehaviour
         gridConstructor.grid[x, y] = go;
     }
 
+    /// <summary>
+    /// Place Ingredient at specified node with the given data
+    /// </summary>
+    /// <param name="node"></param>
+    /// <param name="data"></param>
+    /// <param name="xPos"></param>
+    /// <param name="yPos"></param>
     public void PlaceIngredient(Node node ,IngredientSO data , int xPos, int yPos)
     {
         IngredientSlice slice = Instantiate(data.model).GetComponent<IngredientSlice>(); // GameObject.CreatePrimitive(PrimitiveType.Cube).AddComponent<IngredientSlice>();
@@ -113,6 +125,9 @@ public class Spawner : MonoBehaviour
         itemsOnBoard.Add(slice);
     }
 
+    /// <summary>
+    /// Performs clean up and generates a new level
+    /// </summary>
     [ContextMenu("ResetGame")]
     public void ResetGame()
     {
@@ -134,6 +149,11 @@ public class Spawner : MonoBehaviour
 
     }
 
+    //TODO: Move the function for retry and undo into another file
+    
+    /// <summary>
+    /// Retry all moves
+    /// </summary>
     public void Retry()
     {
         if (canUndo && !IngredientFlipper.hasWon)
@@ -143,6 +163,9 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Undo Last move
+    /// </summary>
     public void Undo()
     {
         if (commands.Count > 0 && canUndo)

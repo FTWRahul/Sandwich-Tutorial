@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
-using Random = UnityEngine.Random;
 
+/// <summary>
+/// Monobehaviour class for creating new ingredients.
+/// </summary>
 public class IngredientSlice : MonoBehaviour 
 {
     public IngredientSO ingredientData; 
@@ -34,15 +33,14 @@ public class IngredientSlice : MonoBehaviour
         modelList.Add(_noBite);
         modelList.Add(_oneBite);
         modelList.Add(_twoBite);
-        //Material material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-        //_mRenderer = GetComponent<MeshRenderer>();
-        //_mRenderer.material = material;
     }
 
+    /// <summary>
+    /// Takes in a node and populates info
+    /// </summary>
+    /// <param name="node"></param>
     public void Init(Node node)
     {
-        //_mRenderer.material.SetColor("_BaseColor", ingredientData.tempColor);
-        //transform.localScale = new Vector3(1, .25f, 1);
         gameObject.name = ingredientData.ingredientName;
         _node = node;
     }
